@@ -949,7 +949,7 @@ body:has(#panel.on) .mobileMenuBtn{display:none}
                   <span class="h-md" id="repTitle">GMV by source</span>
                   <span class="t-sm sec" id="repSub">Weekly trend. Hover anywhere on the chart to compare every series.</span>
                 </div>
-                <div class="legend" id="repLegend"><span class="legendItem"><span class="srcSwatch" style="background:var(--dv-1)"></span>ACE</span><span class="legendItem"><span class="srcSwatch" style="background:var(--dv-3)"></span>Campaign</span><span class="legendItem"><span class="srcSwatch" style="background:var(--dv-2)"></span>Custom</span></div>
+                <div class="legend" id="repLegend"><span class="legendItem"><span class="srcSwatch" style="background:var(--dv-1)"></span>ACE</span><span class="legendItem"><span class="srcSwatch" style="background:var(--dv-3)"></span>Campaign</span><span class="legendItem"><span class="srcSwatch" style="background:var(--dv-2)"></span>Flows</span></div>
               </div>
               <div id="repChart"><svg class="chart reportLineChart" viewBox="0 0 1052 280" role="img" aria-label="GMV time series"><defs><linearGradient id="reportArea0" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="var(--dv-1)" stop-opacity=".16"></stop>
@@ -1003,7 +1003,7 @@ body:has(#panel.on) .mobileMenuBtn{display:none}
       <td class="t-md num-t">$8,915</td>
       <td class="t-md num-t">1.4%</td></tr><tr>
       <td><div class="row gap-xs"><span class="srcSwatch" style="background:var(--dv-2)"></span>
-        <span class="t-md med">Custom</span></div></td>
+        <span class="t-md med">Flows</span></div></td>
       <td class="t-md num-t">9,661</td>
       <td class="t-md num-t">9.4%</td>
       <td class="t-md num-t">7.1%</td>
@@ -1042,7 +1042,7 @@ body:has(#panel.on) .mobileMenuBtn{display:none}
         <header class="pageHeader">
           <div class="ttl">
             <h1 class="h-xxl">Engagements</h1>
-            <p class="t-md sec">Everything that reaches out to a shopper: the engagement the AI decides on its own.</p>
+            <p class="t-md sec">Everything that reaches out to a shopper on its own: the moments ACE is allowed to act on, and how far it can go without you.</p>
           </div>
           <div class="pageActions">
             <button class="btn btn-secondary" data-goto="conversations">Activity log</button>
@@ -1050,23 +1050,19 @@ body:has(#panel.on) .mobileMenuBtn{display:none}
           </div>
         </header>
 
-        <div class="tabList">
-          <button class="tabItem on" data-tab="ace">AI engagement <span class="tag tag-purple" id="aceTabBadge">Automatic</span></button>
-          
-        </div>
-
-        <!-- ---------- TAB: ACE ---------- -->
+        <!-- One tab's worth of content, so no tab bar. The autonomy card's own
+             "Current" tag carries the state the tab badge used to. -->
         <div class="zone top">
-          <!-- ===== MODE: three cards, properly sized, with the education in them ===== -->
+          <!-- ===== MODE: two cards, properly sized, with the education in them ===== -->
           <div class="col gap-xs">
             <div class="row between wrap gap-sm">
               <h2 class="h-lg">Level of autonomy</h2>
               <div class="row gap-xs">
-                
+
                 <span class="t-sm ter">You can change this at any time. Nothing in flight is lost.</span>
               </div>
             </div>
-            <div class="grid g-3" id="aceModeCards"><button class="modeBig " data-acemode="off">
+            <div class="grid g-2" id="aceModeCards"><button class="modeBig " data-acemode="off">
       <div class="row between">
         <div class="row gap-xs"><span class="h-md">Off</span></div>
         <span class="radioRing "></span>
@@ -1080,219 +1076,32 @@ body:has(#panel.on) .mobileMenuBtn{display:none}
         <span class="radioRing on"></span>
       </div>
       <span class="t-md med" style="color:var(--content-accent-default)">It sends on its own, inside your guardrails.</span>
-      <span class="t-sm sec">Same work, no waiting. You review after, not before.</span>
+      <span class="t-sm sec">The guardrails are the control, not an approval queue.</span>
       <span class="t-sm acc med" style="margin-top:auto" data-learn="auto">Learn more →</span>
     </button></div>
           </div>
 
-          <!-- ===== THEMES ===== -->
+          <!-- ===== ENGAGEMENTS ===== -->
           <div class="card" style="overflow:hidden">
             <div class="col gap-xxxs" style="padding:var(--md) var(--lg)">
               <div class="row between wrap gap-sm">
-                <h2 class="h-md">Themes and the plays underneath them</h2>
+                <h2 class="h-md">Engagements</h2>
                 <div class="row gap-xs">
-                  <span class="tag tag-grey" id="aceDomCount">6 of 8 allowed</span>
-                  <span class="tag tag-purple" id="aceDomPotential">2 off · ≈$19,400 GMV left on the table</span>
-                  <button class="btn btn-tertiary sm" id="aceExpandAll">Expand all</button>
+                  <span class="tag tag-grey" id="aceDomCount">4 of 4 active</span>
+                  <span class="tag tag-purple" id="aceDomPotential" style="display:none"></span>
                 </div>
               </div>
-              <p class="t-sm sec">Two layers. A <b>theme</b> is what ACE is allowed to work on — the control that matters if you need to bound an autonomous system. Under each one sit the <b>plays</b> it runs: the standard engagements, now owned by the engine. Each play can be switched off on its own without pulling the whole theme, and still carries exactly one skill. Turn a theme off and every play under it stops regardless of its own switch: it won't propose them, won't send them, won't count them. We keep sizing the opportunity anyway, so you can see what you're declining. Click a row to expand it.</p>
+              <p class="t-sm sec">One list. Each <b>engagement</b> is a moment ACE is allowed to act on, and each one has its own switch — that switch is how you bound the machine, alongside your guardrails. Turn one off and ACE stops there: it won't decide on it, won't send it, won't count it. We keep sizing it anyway, so you can see what you're declining.</p>
             </div>
             <table id="aceDomainTable">
-              <thead><tr><th style="width:34%">Theme and plays</th><th>Shoppers reached</th><th>GMV</th>
-                <th>Conversion</th><th>Opt-out</th><th>Skill</th><th style="width:130px">Activated</th></tr></thead>
-              <tbody><tr class="domRow" data-domopen="0" style="cursor: pointer;">
-      <td><div class="row gap-xs" style="align-items:flex-start">
-        <button class="twistie " tabindex="-1" aria-hidden="true">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 5 7 7-7 7"></path></svg>
-        </button>
-        <div class="col gap-xxxs" style="flex:1">
-          <div class="row gap-xs wrap"><span class="t-md med">Replenishment &amp; reorder</span>
-            <span class="tag tag-grey">3 plays</span>
-            </div>
-          <span class="t-sm sec">Someone is due, or overdue, for something they already buy.</span>
-          
-        </div>
-      </div></td>
-      <td class="t-md num-t">2,410</td>
-      <td class="t-md num-t">$14,900</td>
-      <td class="t-md num-t">8.1%</td>
-      <td class="t-md num-t">0.7%</td>
-      <td><button class="btn btn-secondary sm" data-dominstr="0">
-        <span class="dot" style="background:var(--purple-500)"></span>Edit skill
-      </button></td>
-      <td><div class="row gap-xs" style="justify-content:flex-end">
-        <span class="t-sm med" style="min-width:24px;text-align:right">Yes</span>
-        <span class="toggle on" data-dom="0"></span>
-      </div></td></tr><tr class="domRow" data-domopen="1" style="cursor: pointer;">
-      <td><div class="row gap-xs" style="align-items:flex-start">
-        <button class="twistie " tabindex="-1" aria-hidden="true">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 5 7 7-7 7"></path></svg>
-        </button>
-        <div class="col gap-xxxs" style="flex:1">
-          <div class="row gap-xs wrap"><span class="t-md med">Retention &amp; win-back</span>
-            <span class="tag tag-grey">3 plays</span>
-            </div>
-          <span class="t-sm sec">Going quiet, or already gone, and worth one honest attempt.</span>
-          
-        </div>
-      </div></td>
-      <td class="t-md num-t">1,980</td>
-      <td class="t-md num-t">$9,100</td>
-      <td class="t-md num-t">4.4%</td>
-      <td class="t-md num-t">1.6%</td>
-      <td><button class="btn btn-secondary sm" data-dominstr="1">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"></path></svg>Add skill
-      </button></td>
-      <td><div class="row gap-xs" style="justify-content:flex-end">
-        <span class="t-sm med" style="min-width:24px;text-align:right">Yes</span>
-        <span class="toggle on" data-dom="1"></span>
-      </div></td></tr><tr class="domRow" data-domopen="2" style="cursor: pointer;">
-      <td><div class="row gap-xs" style="align-items:flex-start">
-        <button class="twistie " tabindex="-1" aria-hidden="true">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 5 7 7-7 7"></path></svg>
-        </button>
-        <div class="col gap-xxxs" style="flex:1">
-          <div class="row gap-xs wrap"><span class="t-md med">Cross-sell &amp; complements</span>
-            <span class="tag tag-grey">3 plays</span>
-            </div>
-          <span class="t-sm sec">They own the thing; the companion piece is the obvious next step.</span>
-          
-        </div>
-      </div></td>
-      <td class="t-md num-t">1,640</td>
-      <td class="t-md num-t">$11,300</td>
-      <td class="t-md num-t">6.9%</td>
-      <td class="t-md num-t">0.9%</td>
-      <td><button class="btn btn-secondary sm" data-dominstr="2">
-        <span class="dot" style="background:var(--purple-500)"></span>Edit skill
-      </button></td>
-      <td><div class="row gap-xs" style="justify-content:flex-end">
-        <span class="t-sm med" style="min-width:24px;text-align:right">Yes</span>
-        <span class="toggle on" data-dom="2"></span>
-      </div></td></tr><tr class="domRow" data-domopen="3" style="cursor: pointer;">
-      <td><div class="row gap-xs" style="align-items:flex-start">
-        <button class="twistie " tabindex="-1" aria-hidden="true">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 5 7 7-7 7"></path></svg>
-        </button>
-        <div class="col gap-xxxs" style="flex:1">
-          <div class="row gap-xs wrap"><span class="t-md med">Service recovery</span>
-            <span class="tag tag-grey">3 plays</span>
-            <span class="tag tag-orange">1 needs setup</span></div>
-          <span class="t-sm sec">Something went wrong and the relationship is worth repairing.</span>
-          
-        </div>
-      </div></td>
-      <td class="t-md num-t">520</td>
-      <td class="t-md num-t">$2,400</td>
-      <td class="t-md num-t">3.2%</td>
-      <td class="t-md num-t">0.4%</td>
-      <td><button class="btn btn-secondary sm" data-dominstr="3">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"></path></svg>Add skill
-      </button></td>
-      <td><div class="row gap-xs" style="justify-content:flex-end">
-        <span class="t-sm med" style="min-width:24px;text-align:right">Yes</span>
-        <span class="toggle on" data-dom="3"></span>
-      </div></td></tr><tr class="domRow" data-domopen="4" style="cursor: pointer;">
-      <td><div class="row gap-xs" style="align-items:flex-start">
-        <button class="twistie " tabindex="-1" aria-hidden="true">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 5 7 7-7 7"></path></svg>
-        </button>
-        <div class="col gap-xxxs" style="flex:1">
-          <div class="row gap-xs wrap"><span class="t-md med">Subscriptions</span>
-            <span class="tag tag-grey">4 plays</span>
-            </div>
-          <span class="t-sm sec">Renewals, failed payments, pauses worth saving.</span>
-          
-        </div>
-      </div></td>
-      <td class="t-md num-t">410</td>
-      <td class="t-md num-t">$5,800</td>
-      <td class="t-md num-t">12.6%</td>
-      <td class="t-md num-t">0.3%</td>
-      <td><button class="btn btn-secondary sm" data-dominstr="4">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"></path></svg>Add skill
-      </button></td>
-      <td><div class="row gap-xs" style="justify-content:flex-end">
-        <span class="t-sm med" style="min-width:24px;text-align:right">Yes</span>
-        <span class="toggle on" data-dom="4"></span>
-      </div></td></tr><tr class="domRow" data-domopen="5" style="cursor: pointer;">
-      <td><div class="row gap-xs" style="align-items:flex-start">
-        <button class="twistie " tabindex="-1" aria-hidden="true">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 5 7 7-7 7"></path></svg>
-        </button>
-        <div class="col gap-xxxs" style="flex:1">
-          <div class="row gap-xs wrap"><span class="t-md med">Loyalty moments</span>
-            <span class="tag tag-grey">3 plays</span>
-            </div>
-          <span class="t-sm sec">A tier within reach, points about to expire, an anniversary.</span>
-          
-        </div>
-      </div></td>
-      <td class="t-md num-t">280</td>
-      <td class="t-md num-t">$3,800</td>
-      <td class="t-md num-t">9.8%</td>
-      <td class="t-md num-t">0.5%</td>
-      <td><button class="btn btn-secondary sm" data-dominstr="5">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"></path></svg>Add skill
-      </button></td>
-      <td><div class="row gap-xs" style="justify-content:flex-end">
-        <span class="t-sm med" style="min-width:24px;text-align:right">Yes</span>
-        <span class="toggle on" data-dom="5"></span>
-      </div></td></tr><tr class="domRow" data-domopen="6" style="cursor: pointer;">
-      <td><div class="row gap-xs" style="align-items:flex-start">
-        <button class="twistie " tabindex="-1" aria-hidden="true">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 5 7 7-7 7"></path></svg>
-        </button>
-        <div class="col gap-xxxs" style="flex:1">
-          <div class="row gap-xs wrap"><span class="t-md med">Consideration &amp; browse</span>
-            <span class="tag tag-grey">4 plays</span>
-            </div>
-          <span class="t-sm sec">Looking, hesitating, not yet a customer.</span>
-          <span class="tag tag-purple" style="margin-top:4px;width:fit-content">Not allowed — figures are estimates</span>
-        </div>
-      </div></td>
-      <td class="t-md num-t" style="color:var(--content-accent-default);font-style:italic">≈3,100</td>
-      <td class="t-md num-t" style="color:var(--content-accent-default);font-style:italic">≈$12,800</td>
-      <td class="t-md num-t" style="color:var(--content-accent-default);font-style:italic">≈3.4%</td>
-      <td class="t-md num-t" style="color:var(--content-accent-default);font-style:italic">≈1.8%</td>
-      <td><button class="btn btn-secondary sm" data-dominstr="6">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"></path></svg>Add skill
-      </button></td>
-      <td><div class="row gap-xs" style="justify-content:flex-end">
-        <span class="t-sm ter" style="min-width:24px;text-align:right">No</span>
-        <span class="toggle " data-dom="6"></span>
-      </div></td></tr><tr class="domRow" data-domopen="7" style="cursor: pointer;">
-      <td><div class="row gap-xs" style="align-items:flex-start">
-        <button class="twistie " tabindex="-1" aria-hidden="true">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 5 7 7-7 7"></path></svg>
-        </button>
-        <div class="col gap-xxxs" style="flex:1">
-          <div class="row gap-xs wrap"><span class="t-md med">Seasonal &amp; inventory</span>
-            <span class="tag tag-grey">3 plays</span>
-            </div>
-          <span class="t-sm sec">A restock, a weather swing, a range that suddenly matters.</span>
-          <span class="tag tag-purple" style="margin-top:4px;width:fit-content">Not allowed — figures are estimates</span>
-        </div>
-      </div></td>
-      <td class="t-md num-t" style="color:var(--content-accent-default);font-style:italic">≈1,450</td>
-      <td class="t-md num-t" style="color:var(--content-accent-default);font-style:italic">≈$6,600</td>
-      <td class="t-md num-t" style="color:var(--content-accent-default);font-style:italic">≈5.2%</td>
-      <td class="t-md num-t" style="color:var(--content-accent-default);font-style:italic">≈1.2%</td>
-      <td><button class="btn btn-secondary sm" data-dominstr="7">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"></path></svg>Add skill
-      </button></td>
-      <td><div class="row gap-xs" style="justify-content:flex-end">
-        <span class="t-sm ter" style="min-width:24px;text-align:right">No</span>
-        <span class="toggle " data-dom="7"></span>
-      </div></td></tr></tbody>
+              <thead><tr><th style="width:34%">Engagement</th><th>Shoppers reached</th><th>GMV</th>
+                <th>Conversion</th><th>Opt-out</th><th style="width:130px">Activated</th></tr></thead>
+              <!-- rendered by renderAce() at boot from ACE_ENGAGEMENTS -->
+              <tbody></tbody>
             </table>
           </div>
 
                   </div>
-
-        <!-- ---------- TAB: CUSTOM ENGAGEMENT ---------- -->
-        
       </section>
 
       <!-- ======== CAMPAIGNS · LIST ======== -->
@@ -1579,7 +1388,7 @@ body:has(#panel.on) .mobileMenuBtn{display:none}
             <button class="btn btn-secondary sm" style="width:fit-content">Add a lever</button>
           </div></div>
         <div class="field"><span class="label">Sources allowed to touch this stage</span>
-          <div class="chipInput"><span class="tag tag-purple" style="">ACE</span><span class="tag tag-coral" style="">Custom</span><span class="tag tag-teal" style="">Campaign</span></div></div>
+          <div class="chipInput"><span class="tag tag-purple" style="">ACE</span><span class="tag tag-coral" style="">Flows</span><span class="tag tag-teal" style="">Campaign</span></div></div>
       </div>
       <div class="banner banner-info" style="margin-top:var(--md)">
         <div class="col gap-xxxs"><span class="t-sm med">Why this matters here</span>
@@ -1623,7 +1432,7 @@ body:has(#panel.on) .mobileMenuBtn{display:none}
                 <button class="chip" data-f="stopped">Stopped</button>
               </div>
               <select class="selectEl" id="convSrc" style="height:32px;padding:4px 8px">
-                <option value="all">Every source</option><option>ACE</option><option>Custom</option><option>Campaign</option>
+                <option value="all">Every source</option><option>ACE</option><option>Flows</option><option>Campaign</option>
               </select>
             </div>
             <div class="sepH"></div>
@@ -1651,7 +1460,7 @@ body:has(#panel.on) .mobileMenuBtn{display:none}
         <span class="t-xs ter" style="flex-shrink:0">41 min ago</span>
       </div>
       <div class="row gap-xxs wrap">
-        <span class="tag tag-coral">Custom</span>
+        <span class="tag tag-coral">Flows</span>
         <span class="tag tag-blue">Live</span>
       </div>
       <span class="t-sm sec trunc">Fit-return recovery</span></button><button class="convItem">
@@ -1696,7 +1505,7 @@ body:has(#panel.on) .mobileMenuBtn{display:none}
         <span class="t-xs ter" style="flex-shrink:0">4 h ago</span>
       </div>
       <div class="row gap-xxs wrap">
-        <span class="tag tag-coral">Custom</span>
+        <span class="tag tag-coral">Flows</span>
         <span class="tag tag-green">Closed</span>
       </div>
       <span class="t-sm sec trunc">Helmet cross-sell</span></button><button class="convItem unread">
@@ -1829,7 +1638,7 @@ body:has(#panel.on) .mobileMenuBtn{display:none}
 <script>
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const el=(t,c,h)=>{const n=document.createElement(t);if(c)n.className=c;if(h!=null)n.innerHTML=h;return n};
-const SRC={ACE:{c:"var(--dv-ace)",tag:"tag-purple"},Custom:{c:"var(--dv-custom)",tag:"tag-coral"},
+const SRC={ACE:{c:"var(--dv-ace)",tag:"tag-purple"},Flows:{c:"var(--dv-custom)",tag:"tag-coral"},
            Campaign:{c:"var(--dv-campaign)",tag:"tag-teal"}};
 
 /* =======================================================================
@@ -1882,12 +1691,11 @@ const ENG=[
    when:{ev:11,delay:0,cond:"Viewed the cooling range in the last 30 days"}}
 ];
 
-/* ACE is one switch, not a list of scenarios — but a theme is not a black box
-   either. Two layers: the THEME is the dial you turn, and under it sit the
-   PLAYS it runs. Each play is readable, carries its own skill, and now
-   its own on/off — but a play can never fire while its theme is off, so
-   bounding the machine still starts one level up.
-   Every theme figure is derived from its plays — see domTotals(). */
+/* ACE is one switch, but it is not a black box either. One layer: each
+   ENGAGEMENT is a moment ACE is allowed to act on, readable in a sentence and
+   carrying its own on/off. Bounding the machine happens here and in the
+   guardrails — there is no theme above these and no play below them.
+   Each engagement carries its own figures; nothing is folded. */
 const ACE_ENGAGEMENTS=[
   {n:"Someone searched and did not find.",d:"They looked for something specific and came up empty — a signal to suggest the right alternative before they leave.",ins:"Default",on:true, reach:1180,gmv:6200,cvr:4.6,opt:1.5},
   {n:"Someone cannot make up their mind.",d:"They keep comparing variants, reading reviews, returning to the same page — a nudge toward the decision they are already leaning into.",ins:"Default",on:true, reach:840,gmv:2900,cvr:2.7,opt:2.1},
@@ -1895,13 +1703,12 @@ const ACE_ENGAGEMENTS=[
   {n:"Someone is looking at the thing they are about to run out of.",d:"The usage model says the last one is nearly gone — a timely reminder to restock before they need it.",ins:"Default",on:true, reach:540,gmv:3900,cvr:7.8,opt:0.8}
 ];
 
-/* A play's own numbers. Real when it's running, modelled when it isn't —
-   and a play with no integration behind it is only ever modelled. */
+/* An engagement's own numbers. Real when it's running, modelled when it isn't. */
 function engLive(e,aceOn){ return aceOn && e.on!==false }
 function engReal(e){ return {reach:e.reach||0,gmv:e.gmv||0,cvr:e.cvr||0,opt:e.opt||0} }
 const ACE_CHAIN=[
   ["Watch","Orders, tickets, sessions, consent and catalog, continuously."],
-  ["Find","An agent looks for a moment worth acting on, inside the themes and plays you allow."],
+  ["Find","An agent looks for a moment worth acting on, among the engagements you allow."],
   ["Decide","A second agent decides whether this specific person should hear from you, and when."],
   ["Write","A third writes the message from what it knows about them — not from a template."],
   ["Check","Guardrails run last. They can stop anything the agents decided."],
@@ -2043,23 +1850,23 @@ const OPPORTUNITIES=[
 
 const STAGES=[
   {n:"Visitor",rule:["Sessions ≥ 1","Opt-in = no"],pop:"18,400",days:"—",col:"var(--grey-300)",
-    obj:0,tone:0,disc:0,lever:[0],capN:1,capU:0,src:["Custom"],
+    obj:0,tone:0,disc:0,lever:[0],capN:1,capU:0,src:["Flows"],
     note:"Nothing can send here without consent — suppression does most of the work."},
   {n:"Lead",rule:["Opt-in = yes","Orders = 0"],pop:"6,120",days:"22 d",col:"var(--blue-200)",
-    obj:1,tone:0,disc:1,lever:[0,3],capN:2,capU:0,src:["Custom","Campaign"],
+    obj:1,tone:0,disc:1,lever:[0,3],capN:2,capU:0,src:["Flows","Campaign"],
     note:"ACE stays out: too little signal on a shopper who has never bought."},
   {n:"First-time buyer",rule:["Orders = 1"],pop:"9,840",days:"62 d",col:"var(--teal-200)",
-    obj:2,tone:1,disc:1,lever:[0,3],capN:3,capU:0,src:["ACE","Custom","Campaign"],
+    obj:2,tone:1,disc:1,lever:[0,3],capN:3,capU:0,src:["ACE","Flows","Campaign"],
     note:"Median time to a second order is 62 days; win-back only starts at 120. This is the gap ACE fills."},
   {n:"Repeat",rule:["Orders 2–4"],pop:"4,270",days:"148 d",col:"var(--green-300)",
-    obj:3,tone:2,disc:2,lever:[0,2],capN:2,capU:0,src:["ACE","Custom","Campaign"],
+    obj:3,tone:2,disc:2,lever:[0,2],capN:2,capU:0,src:["ACE","Flows","Campaign"],
     note:"Reorder rhythm is learned per shopper here, not from the store average.",
     replen:[["Care products","38 days","34–44 days"],["Nutrition","27 days","24–31 days"],["Base layers","186 days","seasonal"]]},
   {n:"VIP",rule:["Orders ≥ 5","or LTV in top 10%"],pop:"1,180",days:"—",col:"var(--purple-300)",
-    obj:4,tone:3,disc:2,lever:[1,2,4],capN:2,capU:0,src:["ACE","Custom","Campaign"],
+    obj:4,tone:3,disc:2,lever:[1,2,4],capN:2,capU:0,src:["ACE","Flows","Campaign"],
     note:"Mapped to the Gold and Summit loyalty tiers, so VIP means one thing everywhere."},
   {n:"At risk",rule:["1.5× past their own rhythm"],pop:"2,910",days:"41 d",col:"var(--orange-300)",
-    obj:5,tone:4,disc:3,lever:[0,3,5],capN:2,capU:0,src:["ACE","Custom","Campaign"],
+    obj:5,tone:4,disc:3,lever:[0,3,5],capN:2,capU:0,src:["ACE","Flows","Campaign"],
     note:"Free shipping beat 10% off on every at-risk cohort tested — cheaper, and it won."},
   {n:"Dormant",rule:["No order in 180 days"],pop:"7,650",days:"—",col:"var(--coral-400)",
     obj:6,tone:4,disc:4,lever:[5],capN:1,capU:1,src:["ACE","Campaign"],
@@ -2135,7 +1942,7 @@ const DIMS={
      one-off campaigns. */
   source:{label:"Source", head:"Source", members:[
     {n:"ACE",     c:"var(--dv-1)",base:7720,g:.012,reply:.063,click:.043,cvr:.033,opt:.009,aov:118},
-    {n:"Custom",  c:"var(--dv-2)",base:380, g:.128,reply:.094,click:.071,cvr:.077,opt:.007,aov:142},
+    {n:"Flows",   c:"var(--dv-2)",base:380, g:.128,reply:.094,click:.071,cvr:.077,opt:.007,aov:142},
     {n:"Campaign",c:"var(--dv-3)",base:950, g:.041,reply:.088,click:.062,cvr:.048,opt:.014,aov:186}]},
   domain:{label:"ACE theme", head:"Theme", members:[
     {n:"Replenishment & reorder",base:520,g:.038,reply:.142,click:.101,cvr:.081,opt:.007,aov:76},
@@ -2567,6 +2374,7 @@ function visibleOpportunities(){
   return rows;
 }
 function renderOpportunities(){
+  if(!$("#navOppCount")) return;   /* not in this MVP */
   const rows=visibleOpportunities();
   if(rows.length&&!rows.some(o=>o.id===oppSel)) oppSel=rows[0].id;
   $("#navOppCount").textContent=OPPORTUNITIES.filter(o=>o.status!=="applied").length;
@@ -2692,39 +2500,42 @@ function openCampaignMetrics(){
 }
 
 /* ACE — modes get real estate; domains are the enterprise control */
+/* Two states, not three. There is no approval queue in this MVP: the control
+   that bounds the machine is the guardrails and the per-engagement switches,
+   not a human pressing send. */
 const ACE_MODES=[
   {k:"off",n:"Off",tag:"tag-grey",
    sum:"ACE stops looking entirely.",
    brief:"Nothing is deleted. Turn it back on and it resumes.",
-   det:"Your own engagements and campaigns carry on exactly as before. ACE stops watching your data, stops proposing and stops sending. Anything it had queued is dropped rather than held, so nothing goes out days late when you switch back on.",
+   det:"Your campaigns carry on exactly as before. ACE stops watching your data, stops deciding and stops sending. Anything it had queued is dropped rather than held, so nothing goes out days late when you switch back on.",
    see:"Nothing new in Conversations from ACE. History stays.",
    who:"Pick this if you want the machine out of the loop while you sort something else out."},
-  {k:"manual",n:"Manual acceptance",tag:"tag-blue",
-   sum:"It prepares everything. You press send.",
-   brief:"It does all the work, then waits for you.",
-   det:"ACE finds the moment, picks the person, writes the message and runs every guardrail — then stops. Nothing sends without you. Each one lands in Conversations with the full reasoning attached: the lifecycle stage, the loyalty state, the timing it chose and the lever it picked. You approve, edit or reject. Anything you leave untouched for 48 hours expires rather than going out stale.",
-   see:"A queue in Conversations, each with its reasoning and a sample message.",
-   who:"Pick this for the first few weeks, or on any theme where you want a human in the loop for good."},
   {k:"auto",n:"Automatic",tag:"tag-purple",
    sum:"It sends on its own, inside your guardrails.",
-   brief:"Same work, no waiting. You review after, not before.",
-   det:"ACE sends on its own. The guardrails still run last and can stop anything the agents decided — frequency, quiet hours, exclusions and discount ceilings are not negotiable. Every message is logged in Conversations with the reasoning that produced it, so nothing is unaccountable; the difference is that you read it after rather than before. You can drop back to manual at any time, and anything in flight finishes cleanly.",
+   brief:"The guardrails are the control, not an approval queue.",
+   det:"ACE sends on its own. The guardrails still run last and can stop anything the agents decided — frequency, quiet hours, exclusions and discount ceilings are not negotiable. Every message is logged in Conversations with the reasoning that produced it, so nothing is unaccountable; you read it after rather than before. Switch it off at any time and anything in flight finishes cleanly.",
    see:"Everything in Conversations as it happens, with the reasoning attached.",
-   who:"Pick this once you've read a few dozen and you trust what it's doing."}
+   who:"Pick this to have ACE running at all. Narrow it with the engagement switches below and with your guardrails — not by holding sends back for review."}
 ];
 let aceState="auto";
-/* which domains have their plays showing. Collapsed by default — the theme row
-   carries the folded figures, so the plays only appear on click. */
+/* Vestigial: it tracked which themes had their plays expanded. There is one
+   layer now and nothing expands, but the superseded renderAce above still
+   reads it. */
 let aceOpen=new Set();
 const rate=v=>(Math.round(v*10)/10).toFixed(1)+"%";
-/* the nav badge counts both layers: plays ACE is actually running, plus the
-   custom engagements you have switched on */
+/* the nav badge counts the engagements ACE is actually running */
 function updateNavCount(){
   const on=aceState!=="off";
-  const plays=ACE_ENGAGEMENTS.filter(e=>engLive(e,on)).length;
-  $("#navEngCount").textContent=plays;
+  const live=ACE_ENGAGEMENTS.filter(e=>engLive(e,on)).length;
+  $("#navEngCount").textContent=live;
 }
+/* Superseded on this branch. The MVP collapsed the two layers into one flat
+   list, and the renderAce at the end of the file replaces this one wholesale.
+   This body is kept only as the record of the two-layer version; it cannot run
+   here, because ACE_DOMAINS no longer exists. typeof is deliberate — a bare
+   reference to an undeclared name throws. */
 function renderAce(){
+  if(typeof ACE_DOMAINS==="undefined") return;
   const M=ACE_MODES.find(m=>m.k===aceState), on=aceState!=="off";
   const allowed=ACE_DOMAINS.filter(d=>d.on), off=ACE_DOMAINS.filter(d=>!d.on);
   const lostGmv=off.reduce((a,d)=>a+domPotential(d).gmv,0);
@@ -2830,7 +2641,8 @@ function renderAce(){
 }
 
 function renderBench(){
-  const w=$("#benchWrap"); w.innerHTML="";
+  const w=$("#benchWrap"); if(!w) return;   /* not in this MVP */
+  w.innerHTML="";
   BENCH.forEach(b=>{
     const better = b.good==="high" ? b.v>=b.med : b.v<=b.med;
     const fill = better?"var(--green-500)":"var(--orange-500)";
@@ -2866,6 +2678,7 @@ function whenLine(w){
   return dl==="Immediately" ? ev+", immediately" : ev+", "+dl.toLowerCase();
 }
 function renderEng(){
+  if(!$("#statusFilter")) return;   /* the custom-engagement list is not in this MVP */
   const tf=$("#statusFilter").value;
   const kind=r=>RHYTHM_EVENTS.includes(r.when.ev)?"rhythm":"event";
   const rows=ENG.filter(r=>(engFilter==="all"||r.st===engFilter)&&(tf==="all"||kind(r)===tf));
@@ -3234,7 +3047,7 @@ function renderLifecycle(){
             <button class="btn btn-secondary sm" style="width:fit-content">Add a lever</button>
           </div></div>
         <div class="field"><span class="label">Sources allowed to touch this stage</span>
-          <div class="chipInput">${["ACE","Custom","Campaign"].map(x=>{const on=s.src.includes(x);
+          <div class="chipInput">${["ACE","Flows","Campaign"].map(x=>{const on=s.src.includes(x);
             return `<span class="tag ${on?SRC[x].tag:"tag-grey"}" style="${on?"":"opacity:.4;text-decoration:line-through"}">${x}</span>`}).join("")}</div></div>
       </div>
       <div class="banner banner-info" style="margin-top:var(--md)">
@@ -3277,7 +3090,7 @@ const CONV=[
            ["Timing","18:20 local, his usual window"],["Lever","Early access to the new formula"]],
    thread:[["out","Marc — it's been a while. You usually restock the care kit around now. Anything changed, or should I set one aside before Friday?","waiting"]]},
 
-  {who:"Sam K.",id:"+44 7•• ••• 903",stage:"At risk",tier:"Silver",src:"Custom",domain:"Fit-return recovery",
+  {who:"Sam K.",id:"+44 7•• ••• 903",stage:"At risk",tier:"Silver",src:"Flows",domain:"Fit-return recovery",
    st:"live",when:"41 min ago",unread:true,
    why:"Returned for fit last spring and never came back. The dial and the cut were both changed in March, which is exactly what they complained about.",
    whyBullets:["Returned the shorts last spring specifically for a short-running length — the return reason was logged, not inferred.",
@@ -3333,7 +3146,7 @@ const CONV=[
    reason:[["Guardrail","3 of 3 messages used this week"],["Retry","Next Monday at the earliest"]],
    thread:[]},
 
-  {who:"Chloé B.",id:"+33 7 •• •• 08",stage:"Repeat",tier:"Silver",src:"Custom",domain:"Helmet cross-sell",
+  {who:"Chloé B.",id:"+33 7 •• •• 08",stage:"Repeat",tier:"Silver",src:"Flows",domain:"Helmet cross-sell",
    st:"closed",when:"4 h ago",outcome:"Ordered · $89",
    why:"Bought a frame 5 days ago, zero helmets in her lifetime orders.",
    whyBullets:["Bought a bike frame 5 days ago — the Helmet cross-sell trigger fires at day 5 after delivery.",
@@ -3366,7 +3179,7 @@ const CONV=[
 ];
 const CONV_ST={pending:["Waiting for you","tag-orange"],live:["Live","tag-blue"],
   closed:["Closed","tag-green"],stopped:["Stopped","tag-grey"]};
-const SRC_TAG={ACE:"tag-purple",Custom:"tag-coral",Campaign:"tag-teal"};
+const SRC_TAG={ACE:"tag-purple",Flows:"tag-coral",Campaign:"tag-teal"};
 
 let convFilter="all", convSel=0, convQ="";
 function convRows(){
@@ -3599,6 +3412,7 @@ function openPreviewConv(i){
 /* ===================== LOYALTY (overview + configuration) ===================== */
 let loySel={kind:"tier",i:2};
 function renderLoyalty(){
+  if(!$("#loyTiles")) return;   /* not in this MVP */
   const tot=TIERS.reduce((a,t)=>a+t.m,0);
 
   /* ---------- overview ---------- */
@@ -3849,9 +3663,9 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"){closePanel();closeS
 const NAV_OF={"campaign-new":"campaigns"};
 /* every screen gets its own #hash, so any page can be copied out of the
    address bar and sent to someone else — they land on the same screen. A page
-   with tabs (Engagements' AI/Custom, Loyalty's Overview/Configuration) gets a
-   deeper #page/tab hash, so a link can point at "Custom engagement" or
-   "AI engagement · Automatic" specifically, not just the page they live on. */
+   with tabs gets a deeper #page/tab hash so a link can point at one tab. No
+   page in this MVP has tabs any more, but the machinery is harmless and
+   currentTabFor() returns null when there is no tab bar to read. */
 const KNOWN_PAGES=new Set($$(".page").map(p=>p.id.replace(/^page-/,"")));
 function currentTabFor(page){
   const on=$("#page-"+page+" .tabItem.on");
@@ -3979,7 +3793,10 @@ function renderIntelligence(){
   if(intelSel==="products") intelInspect(gSel);
   if(intelSel==="timing") intelReadout();
 }
-$("#intelList").addEventListener("click",e=>{
+/* Intelligence is not in this MVP. Its markup is gone, so this only binds when
+   the page is actually present — an unguarded querySelector here is what took
+   the whole script down. */
+if($("#intelList")) $("#intelList").addEventListener("click",e=>{
   const b=e.target.closest("[data-intel]"); if(!b) return;
   intelSel=b.dataset.intel; renderIntelligence();
 });
@@ -4617,6 +4434,8 @@ $("#mobileMenuBtn").addEventListener("click",()=>{
 });
 $("#sidebarBackdrop").addEventListener("click",closeSidebar);
 
+/* Opportunities is not in this MVP — bind only if the page is there. */
+if($("#oppType")){
 $("#oppType").addEventListener("change",e=>{oppFilterType=e.target.value;renderOpportunities()});
 $("#oppStatus").addEventListener("change",e=>{oppFilterStatus=e.target.value;renderOpportunities()});
 $("#oppSort").addEventListener("change",e=>{oppSort=e.target.value;renderOpportunities()});
@@ -4626,6 +4445,7 @@ $("#oppSend").addEventListener("click",sendOpportunityMessage);
 $("#oppSay").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendOpportunityMessage()}});
 $("#oppVoice").addEventListener("click",()=>{const b=$("#oppVoice"),input=$("#oppSay");b.classList.add("listening");input.placeholder="Listening…";
   setTimeout(()=>{input.value="Keep the recommendation conservative and show me exactly what will change.";b.classList.remove("listening");input.placeholder="Ask a question or request a change…";input.focus()},900)});
+}
 
 /* tabs (Engagements: ACE | Scenarios, Loyalty: Overview | Configuration).
    Scoped to the tab's own .page — a document-wide toggle would clear one
@@ -4636,17 +4456,9 @@ function selectTab(tab){
   $$(".tabItem",page).forEach(t=>t.classList.toggle("on",t.dataset.tab===tab));
   $$(".tabPanel",page).forEach(p=>p.classList.toggle("hidden",p.dataset.panelFor!==tab));
 }
-const ENGAGEMENT_TABS=["ace","scenarios"];
-document.addEventListener("click",e=>{
-  const t=e.target.closest("[data-tab]"); if(!t) return;
-  selectTab(t.dataset.tab);
-  /* only the Engagements tabs (ACE / Custom) ever need a cross-page jump —
-     Loyalty's own tabs must never trigger it */
-  if(ENGAGEMENT_TABS.includes(t.dataset.tab) && $("#page-engagements").classList.contains("hidden")){
-    goto("engagements"); selectTab(t.dataset.tab);
-  }
-  syncHash();
-});
+/* No page in this MVP has a tab bar, so there is nothing emitting [data-tab]
+   and no click handler for it. selectTab() stays because landOnHash() still
+   calls it, and it no-ops when the tab it is asked for does not exist. */
 
 const TEST_BODY=`
   <div class="banner banner-info"><div class="col gap-xxxs">
@@ -4806,11 +4618,8 @@ $$("#srcFilter .chip").forEach(c=>c.addEventListener("click",()=>{
   $$("#srcFilter .chip").forEach(x=>x.classList.remove("on")); c.classList.add("on");
   engFilter=c.dataset.f; renderEng();
 }));
-$("#statusFilter").addEventListener("change",renderEng);
-$("#aceExpandAll").addEventListener("click",()=>{
-  if(aceOpen.size) aceOpen.clear(); else ACE_DOMAINS.forEach((_,i)=>aceOpen.add(i));
-  renderAce();
-});
+/* the custom-engagement list is not in this MVP */
+if($("#statusFilter")) $("#statusFilter").addEventListener("change",renderEng);
 $$("#convFilter .chip").forEach(c=>c.addEventListener("click",()=>{
   $$("#convFilter .chip").forEach(x=>x.classList.remove("on")); c.classList.add("on");
   convFilter=c.dataset.f; renderConv();
@@ -5889,24 +5698,22 @@ landOnHash();
         <td class="t-md num-t">$${fmt(Math.round(v.gmv))}</td>
         <td class="t-md num-t">${rate(v.cvr)}</td>
         <td class="t-md num-t">${rate(v.opt)}</td>
-        <td><button class="btn btn-secondary sm" data-dominstr="${i}">
-          ${e.ins==="Customized"?`<span class="dot" style="background:var(--purple-500)"></span>Edit skill`
-            :`<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>Add skill`}
-        </button></td>
         <td><div class="row gap-xs" style="justify-content:flex-end">
           <span class="t-sm ${e.on?"med":"ter"}" style="min-width:24px;text-align:right">${e.on?"On":"Off"}</span>
-          <span class="toggle ${e.on?"on":""}" data-eng="${i}" ${on?"":'style="opacity:.5;pointer-events:none"'}></span>
+          <span class="toggle ${e.on?"on":""}" data-aceeng="${i}" ${on?"":'style="opacity:.5;pointer-events:none"'}></span>
         </div></td>`;
       tb.appendChild(tr);
     });
     updateNavCount();
   };
   
-  // Override click handler for engagement toggles
+  /* Engagement toggles. Deliberately NOT data-eng — the main script already
+     binds that attribute to the custom-engagement list, and sharing it made one
+     click run two unrelated handlers against two unrelated arrays. */
   document.addEventListener('click', function(e){
-    const t = e.target.closest('[data-eng]');
+    const t = e.target.closest('[data-aceeng]');
     if (t) {
-      const i = +t.dataset.eng;
+      const i = +t.dataset.aceeng;
       ACE_ENGAGEMENTS[i].on = !ACE_ENGAGEMENTS[i].on;
       renderAce();
     }
