@@ -5778,30 +5778,31 @@ landOnHash();
     if(off.length&&aceState==="auto"){pot.style.display="";pot.textContent=off.length+" off · ≈$"+fmt(lostGmv)+" GMV left on the table"}
     else pot.style.display="none";
     const tb=$("#aceDomainTable tbody"); tb.innerHTML="";
-    /* Silent means ACE decides but never sends, so reach is real and the three
-       outcome columns cannot exist yet — there is no conversion on a message
-       that was never sent. Say that in the cell rather than showing a modelled
-       number the room will read as measured. */
-    const silent=aceState==="silent";
-    /* Nothing is being measured unless ACE is actually sending, so in Off and
-       Silent the headings say so on hover. Only over columns that still show a
-       number: in Silent the three outcome columns have nothing to qualify. */
-    const INFO=`<span class="tileIcon" title="Estimates — ACE isn't sending, so these are modelled rather than measured." style="display:inline-grid;vertical-align:-2px;margin-left:3px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.6v.4"/></svg></span>`;
-    const estReach=aceState!=="auto", estOut=aceState==="off";
+    /* Three different truths, one table.
+       Off      — ACE isn't looking. Nothing ran, so every figure is a real zero.
+       Silent   — ACE decides but never sends. The figures are what it would
+                  have produced: modelled, and labelled as such so the silent
+                  phase can't be mistaken for proof.
+       Automatic— measured. */
+    const isOff=aceState==="off", silent=aceState==="silent";
+    const INFO=t=>`<span class="tileIcon" title="${t}" style="display:inline-grid;vertical-align:-2px;margin-left:3px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.6v.4"/></svg></span>`;
+    const note=isOff ? "ACE is off. Nothing ran, so every figure here is zero."
+             : silent? "Estimates — ACE is deciding but not sending, so these are modelled rather than measured."
+             : null;
+    const q=note?INFO(note):"";
     $("#aceDomainHead").innerHTML=`<tr>
       <th style="width:34%">Engagement</th>
-      <th>Shoppers reached${estReach?INFO:""}</th>
-      <th>GMV${estOut?INFO:""}</th>
-      <th>Conversion${estOut?INFO:""}</th>
-      <th>Opt-out${estOut?INFO:""}</th>
+      <th>Shoppers reached${q}</th>
+      <th>GMV${q}</th>
+      <th>Conversion${q}</th>
+      <th>Opt-out${q}</th>
       <th style="width:130px">Activated</th></tr>`;
-    const na=`<td class="t-sm ter num-t">Available only when on</td>`;
-    const cells=v=>silent
-      ? `<td class="t-md num-t">${fmt(Math.round(v.reach))}</td>`+na+na+na
-      : `<td class="t-md num-t">${fmt(Math.round(v.reach))}</td>
-         <td class="t-md num-t">$${fmt(Math.round(v.gmv))}</td>
-         <td class="t-md num-t">${rate(v.cvr)}</td>
-         <td class="t-md num-t">${rate(v.opt)}</td>`;
+    const ZERO={reach:0,gmv:0,cvr:0,opt:0};
+    const cells=v=>{const x=isOff?ZERO:v; return `
+      <td class="t-md num-t${isOff?" ter":""}">${fmt(Math.round(x.reach))}</td>
+      <td class="t-md num-t${isOff?" ter":""}">$${fmt(Math.round(x.gmv))}</td>
+      <td class="t-md num-t${isOff?" ter":""}">${rate(x.cvr)}</td>
+      <td class="t-md num-t${isOff?" ter":""}">${rate(x.opt)}</td>`;};
 
     /* Total, folded from the rows below it: the named engagements that are
        switched on, plus everything unnamed. Present at every level of autonomy. */
@@ -5838,7 +5839,7 @@ landOnHash();
           <div class="col gap-xxxs" style="flex:1">
             <div class="row gap-xs wrap"><span class="t-md med">${e.n}</span></div>
             <span class="t-sm sec">${e.d}</span>
-            ${live?"":`<span class="tag tag-purple" style="margin-top:4px;width:fit-content">Off — figures are estimates</span>`}
+            ${(live||isOff)?"":`<span class="tag tag-purple" style="margin-top:4px;width:fit-content">Off — figures are estimates</span>`}
           </div>
         </div></td>
         ${cells(v)}
