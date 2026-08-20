@@ -935,7 +935,7 @@ body:has(#panel.on) .mobileMenuBtn{display:none}
                 </div>
                 <div class="field" style="min-width:190px">
                   <span class="label">Break down by</span>
-                  <select class="selectEl" id="repDim"><option value="source" selected="">Source</option><option value="domain">ACE theme</option><option value="stage">Lifecycle stage</option><option value="tier">Loyalty tier</option><option value="channel">Channel</option></select>
+                  <select class="selectEl" id="repDim"><option value="source" selected="">Source</option><option value="domain">ACE engagement</option><option value="stage">Lifecycle stage</option><option value="channel">Channel</option></select>
                 </div>
               </div>
               <div class="row gap-xs" style="align-self:flex-end">
@@ -1065,23 +1065,8 @@ body:has(#panel.on) .mobileMenuBtn{display:none}
                 <span class="t-sm ter">You can change this at any time. Nothing in flight is lost.</span>
               </div>
             </div>
-            <div class="grid g-2" id="aceModeCards"><button class="modeBig " data-acemode="off">
-      <div class="row between">
-        <div class="row gap-xs"><span class="h-md">Off</span></div>
-        <span class="radioRing "></span>
-      </div>
-      <span class="t-md med" style="color:var(--content-neutral-default)">ACE stops looking entirely.</span>
-      <span class="t-sm sec">Nothing is deleted. Turn it back on and it resumes.</span>
-      <span class="t-sm acc med" style="margin-top:auto" data-learn="off">Learn more →</span>
-    </button><button class="modeBig on" data-acemode="auto">
-      <div class="row between">
-        <div class="row gap-xs"><span class="h-md">Automatic</span><span class="tag tag-purple">Current</span></div>
-        <span class="radioRing on"></span>
-      </div>
-      <span class="t-md med" style="color:var(--content-accent-default)">It sends on its own, inside your guardrails.</span>
-      <span class="t-sm sec">The guardrails are the control, not an approval queue.</span>
-      <span class="t-sm acc med" style="margin-top:auto" data-learn="auto">Learn more →</span>
-    </button></div>
+            <!-- rendered by renderAce() at boot from ACE_MODES -->
+            <div class="grid g-3" id="aceModeCards"></div>
           </div>
 
           <!-- ===== ENGAGEMENTS ===== -->
@@ -1094,12 +1079,12 @@ body:has(#panel.on) .mobileMenuBtn{display:none}
                   <span class="tag tag-purple" id="aceDomPotential" style="display:none"></span>
                 </div>
               </div>
-              <p class="t-sm sec">One list. Each <b>engagement</b> is a moment ACE is allowed to act on, and each one has its own switch — that switch is how you bound the machine, alongside your guardrails. Turn one off and ACE stops there: it won't decide on it, won't send it, won't count it. We keep sizing it anyway, so you can see what you're declining.</p>
+              <p class="t-sm sec"><b>Engagements</b> are abstract patterns ACE can act on. The patterns are open-ended; these are the ones that recur often enough to be worth naming and bounding. What each means for a given shopper is ACE's call. <b>Activated</b> means ACE is permitted to act on it; deactivated means it won't. This list is not definitive, and will change with time.</p>
             </div>
             <table id="aceDomainTable">
-              <thead><tr><th style="width:34%">Engagement</th><th>Shoppers reached</th><th>GMV</th>
-                <th>Conversion</th><th>Opt-out</th><th style="width:130px">Activated</th></tr></thead>
-              <!-- rendered by renderAce() at boot from ACE_ENGAGEMENTS -->
+              <!-- head and body both rendered by renderAce(): the column
+                   headings carry an "estimates" note in Off and Silent -->
+              <thead id="aceDomainHead"></thead>
               <tbody></tbody>
             </table>
           </div>
@@ -1297,20 +1282,12 @@ body:has(#panel.on) .mobileMenuBtn{display:none}
         </header>
 
         <div class="zone top">
-          <div class="card" style="overflow:hidden">
-            <div class="col gap-xxxs" style="padding:var(--md) var(--lg)">
-              <h2 class="h-md">General</h2>
-              <p class="t-sm sec">Applies across every channel below, not to any one of them.</p>
-            </div>
-            <div class="sepH"></div>
-            <div class="row between gap-md" style="padding:var(--md) var(--lg)">
-              <div class="col gap-xxxs" style="max-width:70%"><span class="t-md med">Optimize for</span>
-                <span class="t-sm sec">When a shopper can receive more than one channel, this decides which one goes first — it never overrides a channel that's off below.</span></div>
-              <select class="selectEl auto">
-                <option>Best chance of success — richest channel first (RCS → SMS → Email)</option>
-                <option>Lowest cost — cheapest channel first (Email → SMS → RCS)</option>
-                <option>Fastest delivery — SMS first (SMS → RCS → Email)</option>
-              </select>
+          <!-- No cross-channel ordering card: there is nothing to order between
+               channels while there is one of them. -->
+          <div class="banner banner-info">
+            <div class="col gap-xxxs">
+              <span class="t-md med">SMS is the only channel in this MVP.</span>
+              <span class="t-sm sec">Email and RCS each widen what ACE is allowed to do, so they arrive here as a channel to verify rather than as a preference to set. Until then there is nothing to order and nothing to fall back to.</span>
             </div>
           </div>
 
@@ -1753,16 +1730,33 @@ const ENG=[
 ];
 
 /* ACE is one switch, but it is not a black box either. One layer: each
-   ENGAGEMENT is a moment ACE is allowed to act on, readable in a sentence and
+   ENGAGEMENT is an abstract pattern ACE can act on, readable in a sentence and
    carrying its own on/off. Bounding the machine happens here and in the
    guardrails — there is no theme above these and no play below them.
-   Each engagement carries its own figures; nothing is folded. */
+   The named four are not the whole of what ACE does, which is the point of
+   ACE_OTHER below: the patterns are open-ended, and this list is the subset
+   that recurs often enough to be worth naming. */
 const ACE_ENGAGEMENTS=[
   {n:"Someone searched and did not find.",d:"They looked for something specific and came up empty — a signal to suggest the right alternative before they leave.",ins:"Default",on:true, reach:1180,gmv:6200,cvr:4.6,opt:1.5},
   {n:"Someone cannot make up their mind.",d:"They keep comparing variants, reading reviews, returning to the same page — a nudge toward the decision they are already leaning into.",ins:"Default",on:true, reach:840,gmv:2900,cvr:2.7,opt:2.1},
   {n:"Someone keeps coming back to one thing.",d:"Repeat views of the same product without buying — the item is in consideration, and the moment to answer the hesitation is now.",ins:"Default",on:true, reach:690,gmv:2600,cvr:3.1,opt:1.9},
   {n:"Someone is looking at the thing they are about to run out of.",d:"The usage model says the last one is nearly gone — a timely reminder to restock before they need it.",ins:"Default",on:true, reach:540,gmv:3900,cvr:7.8,opt:0.8}
 ];
+
+/* Everything ACE acted on that no named engagement covers — nearly 40% of the
+   volume. It has no switch on purpose: you cannot bound a pattern nobody has
+   named yet, and naming one is exactly what moves it up into the list above. */
+const ACE_OTHER={n:"Other engagements",
+  d:"Patterns ACE found and acted on that don't fall under a named engagement yet. As one recurs often enough to be worth naming, it moves up into the list above and becomes something you can switch off.",
+  reach:2140,gmv:9400,cvr:4.4,opt:1.1};
+
+/* The total is folded from the rows, never typed. A rate cannot be summed, so
+   conversion and opt-out are weighted by reach. */
+function engFold(rows){
+  const reach=rows.reduce((a,r)=>a+r.reach,0);
+  const w=k=>reach?rows.reduce((a,r)=>a+r[k]*r.reach,0)/reach:0;
+  return {reach,gmv:rows.reduce((a,r)=>a+r.gmv,0),cvr:w("cvr"),opt:w("opt")};
+}
 
 /* An engagement's own numbers. Real when it's running, modelled when it isn't. */
 function engLive(e,aceOn){ return aceOn && e.on!==false }
@@ -2005,13 +1999,22 @@ const DIMS={
     {n:"ACE",     c:"var(--dv-1)",base:7720,g:.012,reply:.063,click:.043,cvr:.033,opt:.009,aov:118},
     {n:"Flows",   c:"var(--dv-2)",base:380, g:.128,reply:.094,click:.071,cvr:.077,opt:.007,aov:142},
     {n:"Campaign",c:"var(--dv-3)",base:950, g:.041,reply:.088,click:.062,cvr:.048,opt:.014,aov:186}]},
-  domain:{label:"ACE theme", head:"Theme", members:[
-    {n:"Replenishment & reorder",base:520,g:.038,reply:.142,click:.101,cvr:.081,opt:.007,aov:76},
-    {n:"Retention & win-back",   base:430,g:.031,reply:.086,click:.058,cvr:.044,opt:.016,aov:104},
-    {n:"Cross-sell & complements",base:352,g:.035,reply:.121,click:.094,cvr:.069,opt:.009,aov:112},
-    {n:"Subscriptions",          base:88, g:.024,reply:.164,click:.132,cvr:.126,opt:.003,aov:64},
-    {n:"Service recovery",       base:112,g:.019,reply:.097,click:.041,cvr:.032,opt:.004,aov:141},
-    {n:"Loyalty moments",        base:60, g:.041,reply:.151,click:.118,cvr:.098,opt:.005,aov:138}]},
+  /* ACE's own breakdown, so it has to reconcile with ACE's row above it.
+     Reach shares, conversion and opt-out are exactly the Engagements page's
+     figures; the weekly bases sum to ACE's own 7,720, and every AOV is scaled
+     by one constant so the dimension totals land on ACE's GMV rather than 22%
+     over it. Scaling by a constant leaves all five ratios untouched, which is
+     what makes the two screens readable side by side.
+     Colour is bound explicitly rather than by rank, and Other engagements takes
+     the neutral hue on purpose — it is the literal other bucket. Names are
+     shortened from the sentences on the Engagements page so a five-series
+     legend stays readable. */
+  domain:{label:"ACE engagement", head:"Engagement", members:[
+    {n:"Searched and found nothing",   c:"var(--dv-1)",    base:1690,g:.028,reply:.088,click:.062,cvr:.046,opt:.015,aov:93},
+    {n:"Can't make up their mind",     c:"var(--dv-2)",    base:1200,g:.022,reply:.066,click:.041,cvr:.027,opt:.021,aov:105},
+    {n:"Keeps coming back to one thing",c:"var(--dv-3)",   base:990, g:.019,reply:.071,click:.046,cvr:.031,opt:.019,aov:100},
+    {n:"About to run out",             c:"var(--dv-4)",    base:770, g:.015,reply:.147,click:.112,cvr:.078,opt:.008,aov:76},
+    {n:"Other engagements",            c:"var(--dv-other)",base:3070,g:.006,reply:.084,click:.059,cvr:.044,opt:.011,aov:82}]},
   stage:{label:"Lifecycle stage", head:"Stage", members:[
     {n:"First-time buyer",base:2740,g:.021,reply:.092,click:.068,cvr:.048,opt:.010,aov:104},
     {n:"Repeat",          base:2180,g:.018,reply:.108,click:.081,cvr:.071,opt:.006,aov:126},
@@ -2019,14 +2022,8 @@ const DIMS={
     {n:"VIP",             base:820, g:.014,reply:.147,click:.112,cvr:.094,opt:.004,aov:186},
     {n:"Dormant",         base:1240,g:.009,reply:.031,click:.017,cvr:.011,opt:.022,aov:88},
     {n:"Lead",            base:940, g:.032,reply:.076,click:.052,cvr:.021,opt:.012,aov:79}]},
-  tier:{label:"Loyalty tier", head:"Tier", members:[
-    {n:"Member",base:4120,g:.016,reply:.071,click:.048,cvr:.034,opt:.013,aov:78},
-    {n:"Silver",base:2640,g:.021,reply:.104,click:.079,cvr:.062,opt:.008,aov:96},
-    {n:"Gold",  base:1180,g:.024,reply:.138,click:.106,cvr:.089,opt:.005,aov:124},
-    {n:"Summit",base:420, g:.019,reply:.176,click:.141,cvr:.121,opt:.002,aov:186}]},
   channel:{label:"Channel", head:"Channel", members:[
-    {n:"SMS",base:6900,g:.008,reply:.079,click:.054,cvr:.038,opt:.010,aov:116},
-    {n:"RCS",base:1200,g:.094,reply:.146,click:.118,cvr:.081,opt:.006,aov:134}]}
+    {n:"SMS",c:"var(--dv-1)",base:7900,g:.014,reply:.079,click:.054,cvr:.038,opt:.010,aov:116}]}
 };
 
 const METRICS={
@@ -2103,6 +2100,10 @@ Object.values(DIMS).forEach(d=>{
   order.forEach((r,slot)=>{if(!r.m.c) r.m.c = slot<DV.length ? DV[slot] : DV_OTHER});
 });
 
+/* "ACE engagement" must not become "ace engagement" in a sentence-cased title.
+   Lowercase the phrase, but leave an all-caps acronym as it is. */
+const dimPhrase=s=>s.split(" ").map(w=>w.length>1&&w===w.toUpperCase()?w:w.toLowerCase()).join(" ");
+
 let rep={metric:"gmv",dim:"source",view:"time"};
 
 function repSeries(){
@@ -2111,7 +2112,10 @@ function repSeries(){
      changes the series count must not repaint the survivors */
   const ranked=d.members.map((m,i)=>({m,i,tot:metricTotal("gmv",m,i)}))
     .sort((a,b)=>b.tot-a.tot);
-  const keep=ranked.slice(0,4), rest=ranked.slice(4);
+  /* folding a single leftover into "Other (1)" is worse than showing it,
+     and it would collide with the real "Other engagements" member */
+  const cut=ranked.length<=5?5:4;
+  const keep=ranked.slice(0,cut), rest=ranked.slice(cut);
   const out=keep.map(r=>({n:r.m.n,c:r.m.c||DV[r.i%DV.length],
     vals:WEEKS.map((_,w)=>metricAt(rep.metric,r.m,r.i,w)),
     total:metricTotal(rep.metric,r.m,r.i)}));
@@ -2143,7 +2147,7 @@ function fromTotals(key,t){
 
 function renderReport(){
   const M=METRICS[rep.metric], D=DIMS[rep.dim], series=repSeries();
-  $("#repTitle").textContent=M.label+" by "+D.label.toLowerCase();
+  $("#repTitle").textContent=M.label+" by "+dimPhrase(D.label);
   $("#repSub").textContent = rep.view==="rank"
     ? "Ranked over the last 12 weeks."
     : rep.view==="time" ? "Weekly trend. Hover anywhere on the chart to compare every series."
@@ -2245,7 +2249,7 @@ function renderTiles(){
 
 function renderRevTable(){
   const D=DIMS[rep.dim], rows=dimTotals(rep.dim);
-  $("#revTitle").textContent="Revenue by "+D.label.toLowerCase();
+  $("#revTitle").textContent="Revenue by "+dimPhrase(D.label);
   $("#revDimHead").textContent=D.head;
   const T=rows.reduce((a,r)=>{for(const k in a)a[k]+=r[k];return a},
     {reached:0,replies:0,clicks:0,orders:0,optouts:0,gmv:0});
@@ -2571,12 +2575,18 @@ const ACE_MODES=[
    det:"Your campaigns carry on exactly as before. ACE stops watching your data, stops deciding and stops sending. Anything it had queued is dropped rather than held, so nothing goes out days late when you switch back on.",
    see:"Nothing new in Conversations from ACE. History stays.",
    who:"Pick this if you want the machine out of the loop while you sort something else out."},
+  {k:"silent",n:"Silent",tag:"tag-blue",
+   sum:"It decides, and sends nothing.",
+   brief:"You read what it would have done, on your own shoppers.",
+   det:"ACE runs on your live traffic and reaches no one. It watches, decides and records every call it makes — who it would have messaged, which reason won, and who it would have held back and why. What you get is not a log of decisions but a list of disagreements with your flows: shoppers ACE would have helped that no flow reached, shoppers both would have messaged, and shoppers a flow messaged that ACE would have held. It shows judgement, not results — there is no click-through rate on a message that was never sent.",
+   see:"Nothing new in Conversations. The disagreements with your flows, with the evidence behind each one.",
+   who:"Pick this first. Go live once you've read the disagreements and agree with what it decided."},
   {k:"auto",n:"Automatic",tag:"tag-purple",
    sum:"It sends on its own, inside your guardrails.",
    brief:"The guardrails are the control, not an approval queue.",
-   det:"ACE sends on its own. The guardrails still run last and can stop anything the agents decided — frequency, quiet hours, exclusions and discount ceilings are not negotiable. Every message is logged in Conversations with the reasoning that produced it, so nothing is unaccountable; you read it after rather than before. Switch it off at any time and anything in flight finishes cleanly.",
+   det:"ACE sends on its own. The guardrails still run last and can stop anything the agents decided — frequency, quiet hours, exclusions and discount ceilings are not negotiable. Every message is logged in Conversations with the reasoning that produced it, so nothing is unaccountable; you read it after rather than before. Drop back to silent at any time, and anything in flight finishes cleanly.",
    see:"Everything in Conversations as it happens, with the reasoning attached.",
-   who:"Pick this to have ACE running at all. Narrow it with the engagement switches below and with your guardrails — not by holding sends back for review."}
+   who:"Pick this once the silent run has convinced you. Narrow it with the engagement switches below and with your guardrails — not by holding sends back for review."}
 ];
 let aceState="auto";
 /* Vestigial: it tracked which themes had their plays expanded. There is one
@@ -2866,26 +2876,11 @@ const GR_CATS=[
    what an engagement may do. Master/detail, the same shape Guardrails and
    Lifecycle already use, so picking a channel works the same way picking a
    guardrail category or a lifecycle stage does. `extra` holds settings
-   that only make sense for that one channel (e.g. Email's quiet-hours
-   exemption), so they live in its detail rather than a shared list. */
+   that only make sense for one channel, so they live in its detail rather
+   than a shared list — nothing uses it while SMS is the only channel. */
 const CHANNELS=[
-  {n:"SMS",c:"var(--blue-200)",d:"Text-only. Works everywhere and is the fallback for every other channel.",on:true,locked:true,
-   sends:["SampleStore · short code 78-2001","+1 415 555 0134 · long code"],status:"Verified",tag:"tag-green"},
-  {n:"RCS",c:"var(--teal-200)",d:"Rich media, buttons and read receipts, where the carrier and device support it. Falls back to SMS automatically when it isn't.",on:true,
-   sends:["Sample Store Co. · verified brand agent"],status:"Verified",tag:"tag-green"},
-  {n:"Email",c:"var(--green-300)",d:"Best for longer or receipt-style sends — a different medium, not a shorter SMS.",on:true,
-   sends:["hello@samplestore.example.com"],status:"Domain verification pending",tag:"tag-orange",
-   extra:[["Exempt from quiet hours","An inbox doesn't buzz in someone's pocket the way a text does — let Email send on the engine's normal schedule instead of waiting for the SMS/RCS window in Guardrails → Timing.",false],
-          ["Always include an unsubscribe link","Legal requirement, separate from the SMS/RCS opt-out line in Guardrails → Content.",true,true]]},
-  {n:"Instagram",c:"var(--coral-400)",d:"DMs to shoppers who've messaged the account or opted in from an ad. Short, casual, image-friendly.",on:false,
-   sends:["@samplestoreco"],status:"Not connected",tag:"tag-grey"},
-  {n:"Messenger",c:"var(--purple-200)",d:"Facebook DMs — the same audience shape as Instagram, a different app.",on:false,
-   sends:["Sample Store Co."],status:"Not connected",tag:"tag-grey"},
-  {n:"TikTok",c:"var(--grey-300)",d:"DMs to shoppers who follow or have engaged with the account.",on:false,
-   sends:["@samplestoreco"],status:"Not connected",tag:"tag-grey"},
-  {n:"TikTok Shop",c:"var(--orange-300)",d:"Order and shipping updates tied to a TikTok Shop purchase.",on:false,
-   sends:["Sample Store Co. Shop"],status:"Not connected",tag:"tag-grey",
-   note:"Transactional only — TikTok Shop's own policy restricts this channel to order and shipping updates, so it never carries marketing content regardless of the instructions."}
+  {n:"SMS",c:"var(--blue-200)",d:"Text-only. The only channel in this MVP.",on:true,locked:true,
+   sends:["SampleStore · short code 78-2001","+1 415 555 0134 · long code"],status:"Verified",tag:"tag-green"}
 ];
 let chSel=0;
 function renderChannels(){
@@ -5778,9 +5773,62 @@ landOnHash();
       </button>`}).join("");
     $("#aceDomCount").textContent=allowed.length+" of "+ACE_ENGAGEMENTS.length+" active";
     const pot=$("#aceDomPotential");
-    if(off.length&&on){pot.style.display="";pot.textContent=off.length+" off · ≈$"+fmt(lostGmv)+" GMV left on the table"}
+    /* only in Automatic — the figure it quotes is exactly the one Silent says
+       it cannot have yet */
+    if(off.length&&aceState==="auto"){pot.style.display="";pot.textContent=off.length+" off · ≈$"+fmt(lostGmv)+" GMV left on the table"}
     else pot.style.display="none";
     const tb=$("#aceDomainTable tbody"); tb.innerHTML="";
+    /* Silent means ACE decides but never sends, so reach is real and the three
+       outcome columns cannot exist yet — there is no conversion on a message
+       that was never sent. Say that in the cell rather than showing a modelled
+       number the room will read as measured. */
+    const silent=aceState==="silent";
+    /* Nothing is being measured unless ACE is actually sending, so in Off and
+       Silent the headings say so on hover. Only over columns that still show a
+       number: in Silent the three outcome columns have nothing to qualify. */
+    const INFO=`<span class="tileIcon" title="Estimates — ACE isn't sending, so these are modelled rather than measured." style="display:inline-grid;vertical-align:-2px;margin-left:3px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.6v.4"/></svg></span>`;
+    const estReach=aceState!=="auto", estOut=aceState==="off";
+    $("#aceDomainHead").innerHTML=`<tr>
+      <th style="width:34%">Engagement</th>
+      <th>Shoppers reached${estReach?INFO:""}</th>
+      <th>GMV${estOut?INFO:""}</th>
+      <th>Conversion${estOut?INFO:""}</th>
+      <th>Opt-out${estOut?INFO:""}</th>
+      <th style="width:130px">Activated</th></tr>`;
+    const na=`<td class="t-sm ter num-t">Available only when on</td>`;
+    const cells=v=>silent
+      ? `<td class="t-md num-t">${fmt(Math.round(v.reach))}</td>`+na+na+na
+      : `<td class="t-md num-t">${fmt(Math.round(v.reach))}</td>
+         <td class="t-md num-t">$${fmt(Math.round(v.gmv))}</td>
+         <td class="t-md num-t">${rate(v.cvr)}</td>
+         <td class="t-md num-t">${rate(v.opt)}</td>`;
+
+    /* Total, folded from the rows below it: the named engagements that are
+       switched on, plus everything unnamed. Present at every level of autonomy. */
+    const counted=ACE_ENGAGEMENTS.filter(e=>e.on!==false).concat([ACE_OTHER]);
+    const tot=el("tr","domRow");
+    tot.innerHTML=`
+      <td><div class="col gap-xxxs">
+        <span class="t-md med bold">Total</span>
+        <span class="t-sm sec">Everything ACE acted on, named and unnamed.</span>
+      </div></td>
+      ${cells(engFold(counted))}
+      <td><span class="t-sm ter" style="display:block;text-align:right">—</span></td>`;
+    tb.appendChild(tot);
+
+    /* The unnamed remainder, directly under the total and above the named four,
+       so the four never read as the whole of what ACE does. */
+    const oth=el("tr","domRow");
+    oth.innerHTML=`
+      <td><div class="col gap-xxxs">
+        <span class="t-md med">${ACE_OTHER.n}</span>
+        <span class="t-sm sec">${ACE_OTHER.d}</span>
+        <span class="tag tag-grey" style="margin-top:4px;width:fit-content">No switch — nothing to bound until it's named</span>
+      </div></td>
+      ${cells(ACE_OTHER)}
+      <td><span class="t-sm ter" style="display:block;text-align:right">—</span></td>`;
+    tb.appendChild(oth);
+
     ACE_ENGAGEMENTS.forEach((e,i)=>{
       const live=engLive(e,on);
       const v=engReal(e);
@@ -5793,10 +5841,7 @@ landOnHash();
             ${live?"":`<span class="tag tag-purple" style="margin-top:4px;width:fit-content">Off — figures are estimates</span>`}
           </div>
         </div></td>
-        <td class="t-md num-t">${fmt(Math.round(v.reach))}</td>
-        <td class="t-md num-t">$${fmt(Math.round(v.gmv))}</td>
-        <td class="t-md num-t">${rate(v.cvr)}</td>
-        <td class="t-md num-t">${rate(v.opt)}</td>
+        ${cells(v)}
         <td><div class="row gap-xs" style="justify-content:flex-end">
           <span class="t-sm ${e.on?"med":"ter"}" style="min-width:24px;text-align:right">${e.on?"On":"Off"}</span>
           <span class="toggle ${e.on?"on":""}" data-aceeng="${i}" ${on?"":'style="opacity:.5;pointer-events:none"'}></span>
