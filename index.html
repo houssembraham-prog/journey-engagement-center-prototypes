@@ -772,6 +772,9 @@ body:has(#panel.on) .mobileMenuBtn{display:none}
     <button class="navItem" data-page="engagements">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2 4.5 13.5H11l-1 8.5 8.5-11.5H12l1-8.5z"></path></svg>
       Engagements <span class="count" id="navEngCount">22</span></button>
+    <button class="navItem" data-page="flows">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="5" r="2.2"></circle><circle cx="6" cy="19" r="2.2"></circle><circle cx="18" cy="12" r="2.2"></circle><path d="M8.2 5h4.3a3 3 0 0 1 3 3v1.8"></path><path d="M8.2 19h4.3a3 3 0 0 0 3-3v-1.8"></path></svg>
+      Flows <span class="count" id="scnBadge">5</span></button>
     <button class="navItem" data-page="campaigns">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10.5 20 4l-2.5 16L3 13.5z"></path><path d="M8 12v6l3.5-2"></path></svg>
       Campaigns <span class="count" id="navCamp">6</span></button>
@@ -1102,6 +1105,56 @@ body:has(#panel.on) .mobileMenuBtn{display:none}
           </div>
 
                   </div>
+      </section>
+
+      <!-- ======== FLOWS · the standard lifecycle sequences we ship ======== -->
+      <section class="page hidden" id="page-flows">
+        <header class="pageHeader">
+          <div class="ttl">
+            <h1 class="h-xxl">Flows</h1>
+            <p class="t-md sec">The standard lifecycle sequences, running on triggers you can name.</p>
+          </div>
+          <div class="pageActions">
+            <button class="btn btn-secondary" data-goto="conversations">Activity log</button>
+          </div>
+        </header>
+
+        <div class="zone top">
+          <div class="banner banner-info">
+            <div class="col gap-xxxs">
+              <span class="t-md med">A flow fires on a trigger you can name, every time it happens.</span>
+              <span class="t-sm sec">That is the whole difference from <b>Engagements</b>, where ACE works the moments no fixed trigger describes. Browse Abandoned catches the session that <i>ended</i>; ACE reads the one that is still going. We write the trigger — it is what makes a Welcome a Welcome, and it is not yours to move. <b>The wait is yours</b>, and so is what the message says.</span>
+            </div>
+          </div>
+
+          <div class="row between wrap gap-sm">
+            <div class="chips" id="srcFilter">
+              <button class="chip on" data-f="all">All <span class="ter" id="fcAll"></span></button>
+              <button class="chip" data-f="on">Running <span class="ter" id="fcOn"></span></button>
+              <button class="chip" data-f="off">Paused <span class="ter" id="fcOff"></span></button>
+            </div>
+            <div class="row gap-xs">
+              <select class="selectEl auto" id="statusFilter">
+                <option value="all">Any trigger</option><option value="event">Event triggers</option>
+                <option value="rhythm">Rhythm and signal triggers</option>
+              </select>
+              <select class="selectEl auto"><option>Sort: volume</option><option>Sort: conversion</option><option>Sort: name</option></select>
+            </div>
+          </div>
+
+          <div class="card" style="overflow:hidden">
+            <table id="engTable">
+              <thead><tr>
+                <th style="width:26%">Flow</th><th style="width:34%">When — the trigger</th>
+                <th>Sent · 30d</th><th>CVR</th><th style="width:150px">Status</th>
+              </tr></thead>
+              <!-- rendered by renderEng() at boot from ENG -->
+              <tbody></tbody>
+            </table>
+          </div>
+
+          <p class="t-sm ter">Every flow ships on. Pausing one stops it entirely — the shoppers who would have entered it simply don't. The guardrails still run last on anything a flow sends: quiet hours, frequency caps and the exclusion list all apply here exactly as they do to ACE.</p>
+        </div>
       </section>
 
       <!-- ======== CAMPAIGNS · LIST ======== -->
@@ -1612,7 +1665,7 @@ body:has(#panel.on) .mobileMenuBtn{display:none}
       <section class="page hidden" id="page-soon">
         <header class="pageHeader"><div class="ttl">
           <h1 class="h-xxl">Not in this prototype</h1>
-          <p class="t-md sec">This MVP covers Overview, Engagements, Campaigns, Guardrails, Lifecycle, Conversations and Channels.</p></div></header>
+          <p class="t-md sec">This MVP covers Overview, Engagements, Flows, Campaigns, Guardrails, Lifecycle, Conversations and Channels.</p></div></header>
       </section>
 
     </div>
@@ -1670,25 +1723,33 @@ const BENCH=[
   {n:"Opt-out rate",v:0.9,med:1.6,top:0.7,max:3,unit:"%",good:"low"}
 ];
 
-/* A custom engagement is the only thing a merchant hand-builds now. Two parts:
-   WHEN it fires (the trigger) and WHAT it says (the skill). */
+/* A flow is a standard lifecycle sequence we ship, not something the merchant
+   hand-builds. Two parts, and they belong to different people: WHEN it fires
+   (the trigger — ours, fixed, it is what makes a Welcome a Welcome) and how
+   long it waits (the delay — theirs). WHAT it says is the skill, editable.
+   "Opted in to marketing" is appended last on purpose: RHYTHM_EVENTS pins
+   indices 10 and 11, so nothing may be inserted ahead of them. */
 const WHEN_EVENTS=["Checkout abandoned","Session ends without a cart","Order placed","Order fulfilled",
   "Delivery confirmed","Return processed","Support ticket resolved","Product back in stock",
-  "Subscription renewal due","Loyalty threshold crossed","On the shopper's own rhythm","Weather change where they live"];
+  "Subscription renewal due","Loyalty threshold crossed","On the shopper's own rhythm","Weather change where they live",
+  "Opted in to marketing"];
 const WHEN_DELAYS=["Immediately","After 45 minutes","After 3 hours","After 20 hours","After 1 day",
   "After 2 days","After 5 days","After 14 days","When the engine judges it best"];
 
+/* Volumes are sized to the Flows member of DIMS.source (380 reached a week,
+   so ~1,600 a month across all five). They are stated, not derived — the
+   reporting engine has never read this table. */
 const ENG=[
-  {n:"Helmet cross-sell",d:"Bike buyers who never bought a helmet",ins:"Customized",sent:420,cvr:"7.8%",st:"on",
-   when:{ev:3,delay:6,cond:"Order contains Bikes · never bought a helmet"}},
-  {n:"Fit-return recovery",d:"Returned for size, never came back",ins:"Customized",sent:180,cvr:"11.2%",st:"on",
-   when:{ev:5,delay:5,cond:"Return reason is size or fit"}},
-  {n:"Leaky cart · $200+",d:"High-value carts that stalled at checkout",ins:"Customized",sent:250,cvr:"9.4%",st:"on",
-   when:{ev:0,delay:1,cond:"Cart value ≥ $200"}},
-  {n:"B2B reorder nudge",d:"Wholesale accounts past their cadence",ins:"Customized",sent:70,cvr:"22.9%",st:"on",
-   when:{ev:10,delay:8,cond:"Account type is wholesale"}},
-  {n:"Cold-snap cooling range",d:"Browsers during the temperature spike",ins:"Customized",sent:0,cvr:"—",st:"off",
-   when:{ev:11,delay:0,cond:"Viewed the cooling range in the last 30 days"}}
+  {n:"Welcome",d:"Someone opted in and has not bought yet",ins:"Default",sent:640,cvr:"6.2%",st:"on",
+   when:{ev:12,delay:0,cond:"First opt-in · never ordered"}},
+  {n:"Cart Abandoned",d:"A cart that reached checkout and stalled",ins:"Customized",sent:410,cvr:"11.4%",st:"on",
+   when:{ev:0,delay:1,cond:"Cart value ≥ $40 · no order since"}},
+  {n:"Browse Abandoned",d:"A session that ended without a cart at all",ins:"Default",sent:380,cvr:"3.8%",st:"on",
+   when:{ev:1,delay:2,cond:"Two or more product views in the session"}},
+  {n:"Post-purchase",d:"The order landed and the first days decide the next one",ins:"Default",sent:150,cvr:"4.1%",st:"on",
+   when:{ev:4,delay:5,cond:"No return or support ticket on the order"}},
+  {n:"Customer Win-back",d:"Past their usual gap, and worth one honest attempt",ins:"Default",sent:90,cvr:"2.9%",st:"on",
+   when:{ev:10,delay:6,cond:"No order in 120 days · two or more past orders"}}
 ];
 
 /* ACE is one switch, but it is not a black box either. One layer: each
@@ -2668,17 +2729,17 @@ function renderBench(){
 }
 
 /* =======================================================================
-   ENGAGEMENTS
+   FLOWS
    ======================================================================= */
 let engFilter="all";
-/* the trigger, read back as a sentence — the same words the studio edits */
+/* the trigger, read back as a sentence — the same words the studio shows */
 const RHYTHM_EVENTS=[10,11];
 function whenLine(w){
   const ev=WHEN_EVENTS[w.ev], dl=WHEN_DELAYS[w.delay];
   return dl==="Immediately" ? ev+", immediately" : ev+", "+dl.toLowerCase();
 }
 function renderEng(){
-  if(!$("#statusFilter")) return;   /* the custom-engagement list is not in this MVP */
+  if(!$("#statusFilter")) return;   /* only the Flows page carries this table */
   const tf=$("#statusFilter").value;
   const kind=r=>RHYTHM_EVENTS.includes(r.when.ev)?"rhythm":"event";
   const rows=ENG.filter(r=>(engFilter==="all"||r.st===engFilter)&&(tf==="all"||kind(r)===tf));
@@ -2695,7 +2756,6 @@ function renderEng(){
         <span class="t-sm med">${whenLine(r.when)}</span>
         <span class="t-xs ter">only if ${r.when.cond.toLowerCase()}</span>
       </div></td>
-      <td><span class="tag ${r.ins==="Customized"?"tag-purple":"tag-grey"}">${r.ins}</span></td>
       <td class="t-md num-t ${r.sent?"":"ter"}">${r.sent?fmt(r.sent):"—"}</td>
       <td class="t-md num-t ${r.cvr==="—"?"ter":""}">${r.cvr}</td>
       <td><div class="row gap-xs" style="justify-content:flex-end">
@@ -2711,7 +2771,7 @@ function renderEng(){
   $("#fcAll").textContent=ENG.length;
   $("#fcOn").textContent=ENG.filter(r=>r.st==="on").length;
   $("#fcOff").textContent=ENG.filter(r=>r.st!=="on").length;
-  $("#scnBadge").textContent=ENG.length;
+  $("#scnBadge").textContent=ENG.filter(r=>r.st==="on").length;   /* nav count = running, same rule as Engagements */
   updateNavCount();
 }
 
@@ -4618,7 +4678,7 @@ $$("#srcFilter .chip").forEach(c=>c.addEventListener("click",()=>{
   $$("#srcFilter .chip").forEach(x=>x.classList.remove("on")); c.classList.add("on");
   engFilter=c.dataset.f; renderEng();
 }));
-/* the custom-engagement list is not in this MVP */
+/* the trigger-type filter only exists on the Flows page */
 if($("#statusFilter")) $("#statusFilter").addEventListener("change",renderEng);
 $$("#convFilter .chip").forEach(c=>c.addEventListener("click",()=>{
   $$("#convFilter .chip").forEach(x=>x.classList.remove("on")); c.classList.add("on");
@@ -5356,7 +5416,7 @@ const SIM_SHOPPERS=[
 ];
 function simOpener(ctx,shopper){
   if(ctx.kind==="ACE") return `Hey ${shopper.n.split(" ")[0]} — how are the Winter Tights holding up? Most people pair them with the Merino base layer once it drops below 5°. Want me to show you the two that fit your size?`;
-  if(ctx.kind==="Custom") return `${shopper.n.split(" ")[0]} — nice frame. One thing you'll want before the first proper ride: a helmet that actually fits the way you ride. Want me to narrow it to two?`;
+  if(ctx.kind==="Flows") return `${shopper.n.split(" ")[0]} — you left the Merino base layer at checkout. Still deciding on the size? I can tell you which one works with the tights you already have.`;
   return `You left the Merino base layer in your basket — still deciding on the size? I can tell you which one fits with the tights you already have.`;
 }
 function simReply(text){
@@ -5400,6 +5460,32 @@ function whenBlock(ctx){
           <span class="t-md med">Fires ${w.line}</span>
           <span class="t-sm sec">This play sits inside <b>${w.domain}</b>. You can't retime it here — that's the difference between a play and a custom engagement. Use its own switch in the table to turn off just this play, or turn off the whole theme.</span>
         </div>
+      </div>
+    </div>`;
+  /* a flow: we own the trigger, the merchant owns the wait. The event and the
+     condition are stated rather than offered, and carried as hidden inputs so
+     whenReadback() and the save path read them the same way they read the
+     editable ones. */
+  if(w.mode==="delay") return `
+    <div class="col gap-xxs">
+      <div class="row between wrap gap-xs">
+        <span class="t-sm bold">When — the trigger</span>
+        <span class="tag tag-purple">We set this</span>
+      </div>
+      <div class="card pad-md" style="background:var(--purple-50)">
+        <div class="col gap-xxxs">
+          <span class="t-md med">${WHEN_EVENTS[w.ev]}</span>
+          <span class="t-sm sec">Only if ${w.cond.toLowerCase()}. The trigger is what makes this flow the flow it is, so it isn't yours to move — if you need a different moment, that's a job for ACE or a campaign.</span>
+        </div>
+      </div>
+      <input type="hidden" id="whenEv" value="${w.ev}">
+      <input type="hidden" id="whenCond" value="${w.cond}">
+      <div class="field"><span class="label">Then waits <span class="ter">— yours to set</span></span>
+        <select class="selectEl" id="whenDelay">
+          ${WHEN_DELAYS.map((x,i)=>`<option value="${i}" ${i===w.delay?"selected":""}>${x}</option>`).join("")}
+        </select></div>
+      <div class="card pad-md" style="background:var(--grey-50)">
+        <span class="t-sm sec" id="whenReadback"></span>
       </div>
     </div>`;
   /* the trigger is set by describing it, same as audience in the campaign
@@ -5515,23 +5601,34 @@ function openStudio(ctx){
      width until asked for — either link opens it, "Run test" opens and runs. */
   const openTest=()=>{panel.classList.add("wide");$("#studioGrid").classList.add("testOpen");$("#studioTestCol").classList.remove("hidden")};
   $("#studioTestOpen").addEventListener("click",openTest);
-  /* Only the custom-engagement studio writes back — a play's skill and a
-     theme's are still decorative, same as every other Save in the prototype. */
+  /* Only the flow studio writes back — an ACE skill is still decorative, same
+     as every other Save in the prototype. A flow saves its wait and its skill;
+     the trigger is ours, so it is read back but never taken from the form. */
   $("#studioSave").addEventListener("click",()=>{
+    if(ctx.when&&ctx.when.mode==="delay"){
+      const r=ENG[ctx.engIndex], text=$("#studioIns").value.trim();
+      r.when={...r.when,delay:+$("#whenDelay").value};
+      r.text=text; if(text!==ENG_DEFAULT_TEXT) r.ins="Customized";
+      renderEng(); closePanel(); return;
+    }
     if(!ctx.when||ctx.when.mode!=="edit") return closePanel();
     const w={ev:+$("#whenEv").value,delay:+$("#whenDelay").value,cond:$("#whenCond").value.trim()};
     const text=$("#studioIns").value.trim();
     if(ctx.nl){
       const nl=$("#studioNl").value.trim();
-      ENG.push({n:"New custom engagement",d:nl||"Written by you",
+      ENG.push({n:"New flow",d:nl||"Written by you",
         note:"Draft — switch it on when you're ready",
         ins:"Customized",sent:0,cvr:"—",st:"off",when:w,text});
     } else {
       const r=ENG[ctx.engIndex];
       r.when=w; r.text=text; if(text!==ENG_DEFAULT_TEXT) r.ins="Customized";
     }
-    renderEng(); selectTab("scenarios"); closePanel();
+    renderEng(); closePanel();
   });
+  if(ctx.when&&ctx.when.mode==="delay"){
+    whenReadback();
+    $("#whenDelay").addEventListener("change",whenReadback);
+  }
   if(ctx.when&&ctx.when.mode==="edit"){
     whenReadback();
     ["#whenEv","#whenDelay"].forEach(s=>$(s).addEventListener("change",whenReadback));
@@ -5595,12 +5692,13 @@ function drawStudio(){
   t.scrollTop=t.scrollHeight;
 }
 const slugify=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
-/* a custom engagement: you set the When, you write the What */
+/* a flow: the trigger is stated because it's ours, the wait is a real control
+   because it's theirs, and the skill is editable like any other */
 function studioForEng(i){
   const r=ENG[i];
-  openStudio({title:r.n,sub:"Custom engagement · when it fires and what it says",ins:r.ins,kind:"Custom",
-    engIndex:i,when:{mode:"edit",ev:r.when.ev,delay:r.when.delay,cond:r.when.cond},
-    slug:slugify(r.n),text:instructionText(r)});
+  openStudio({title:r.n,sub:"Flow · when it fires, how long it waits, and what it says",ins:r.ins,kind:"Flows",
+    engIndex:i,when:{mode:"delay",ev:r.when.ev,delay:r.when.delay,cond:r.when.cond},
+    slug:"flow/"+slugify(r.n),text:instructionText(r)});
 }
 /* a new one: same two halves, both empty, with the read-back to fill them */
 function studioForNew(){
