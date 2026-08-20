@@ -1083,7 +1083,7 @@ body:has(#panel.on) .mobileMenuBtn{display:none}
             </div>
             <table id="aceDomainTable">
               <!-- head and body both rendered by renderAce(): the column
-                   headings carry an "estimates" note in Off and Silent -->
+                   headings carry an "estimates" note in Off and Dry-run -->
               <thead id="aceDomainHead"></thead>
               <tbody></tbody>
             </table>
@@ -2575,7 +2575,7 @@ const ACE_MODES=[
    det:"Your campaigns carry on exactly as before. ACE stops watching your data, stops deciding and stops sending. Anything it had queued is dropped rather than held, so nothing goes out days late when you switch back on.",
    see:"Nothing new in Conversations from ACE. History stays.",
    who:"Pick this if you want the machine out of the loop while you sort something else out."},
-  {k:"silent",n:"Silent",tag:"tag-blue",
+  {k:"dryrun",n:"Dry-run",tag:"tag-blue",
    sum:"It decides, and sends nothing.",
    brief:"You read what it would have done, on your own shoppers.",
    det:"ACE runs on your live traffic and reaches no one. It watches, decides and records every call it makes — who it would have messaged, which reason won, and who it would have held back and why. What you get is not a log of decisions but a list of disagreements with your flows: shoppers ACE would have helped that no flow reached, shoppers both would have messaged, and shoppers a flow messaged that ACE would have held. It shows judgement, not results — there is no click-through rate on a message that was never sent.",
@@ -2584,9 +2584,9 @@ const ACE_MODES=[
   {k:"auto",n:"Automatic",tag:"tag-purple",
    sum:"It sends on its own, inside your guardrails.",
    brief:"The guardrails are the control, not an approval queue.",
-   det:"ACE sends on its own. The guardrails still run last and can stop anything the agents decided — frequency, quiet hours, exclusions and discount ceilings are not negotiable. Every message is logged in Conversations with the reasoning that produced it, so nothing is unaccountable; you read it after rather than before. Drop back to silent at any time, and anything in flight finishes cleanly.",
+   det:"ACE sends on its own. The guardrails still run last and can stop anything the agents decided — frequency, quiet hours, exclusions and discount ceilings are not negotiable. Every message is logged in Conversations with the reasoning that produced it, so nothing is unaccountable; you read it after rather than before. Drop back to a dry-run at any time, and anything in flight finishes cleanly.",
    see:"Everything in Conversations as it happens, with the reasoning attached.",
-   who:"Pick this once the silent run has convinced you. Narrow it with the engagement switches below and with your guardrails — not by holding sends back for review."}
+   who:"Pick this once the dry-run has convinced you. Narrow it with the engagement switches below and with your guardrails — not by holding sends back for review."}
 ];
 let aceState="auto";
 /* Vestigial: it tracked which themes had their plays expanded. There is one
@@ -5773,21 +5773,21 @@ landOnHash();
       </button>`}).join("");
     $("#aceDomCount").textContent=allowed.length+" of "+ACE_ENGAGEMENTS.length+" active";
     const pot=$("#aceDomPotential");
-    /* only in Automatic — the figure it quotes is exactly the one Silent says
+    /* only in Automatic — the figure it quotes is exactly the one Dry-run says
        it cannot have yet */
     if(off.length&&aceState==="auto"){pot.style.display="";pot.textContent=off.length+" off · ≈$"+fmt(lostGmv)+" GMV left on the table"}
     else pot.style.display="none";
     const tb=$("#aceDomainTable tbody"); tb.innerHTML="";
     /* Three different truths, one table.
        Off      — ACE isn't looking. Nothing ran, so every figure is a real zero.
-       Silent   — ACE decides but never sends. The figures are what it would
-                  have produced: modelled, and labelled as such so the silent
-                  phase can't be mistaken for proof.
+       Dry-run  — ACE decides but never sends. The figures are what it would
+                  have produced: modelled, and labelled as such so a dry-run
+                  can't be mistaken for proof.
        Automatic— measured. */
-    const isOff=aceState==="off", silent=aceState==="silent";
+    const isOff=aceState==="off", dryRun=aceState==="dryrun";
     const INFO=t=>`<span class="tileIcon" title="${t}" style="display:inline-grid;vertical-align:-2px;margin-left:3px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.6v.4"/></svg></span>`;
     const note=isOff ? "ACE is off. Nothing ran, so every figure here is zero."
-             : silent? "Estimates — ACE is deciding but not sending, so these are modelled rather than measured."
+             : dryRun? "Estimates — ACE is deciding but not sending, so these are modelled rather than measured."
              : null;
     const q=note?INFO(note):"";
     $("#aceDomainHead").innerHTML=`<tr>
