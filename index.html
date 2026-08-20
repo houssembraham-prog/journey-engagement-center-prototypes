@@ -1189,7 +1189,7 @@ body:has(#panel.on) .mobileMenuBtn{display:none}
           </div>
           <div class="card campaignTableWrap">
             <table id="campTable">
-              <thead><tr><th>Campaign</th><th title="Audience">Audience</th><th title="Sent">Sent</th><th title="Reach rate">Reach rate</th><th title="Conversion rate">Conversion rate</th><th title="GMV">GMV</th><th title="ROI">ROI</th><th title="Opt-out rate">Opt-out rate</th><th title="Winning skill">Winning skill</th><th title="Status">Status</th></tr></thead>
+              <thead><tr><th>Campaign</th><th title="Audience">Audience</th><th title="Sent">Sent</th><th title="Reach rate">Reach rate</th><th title="Conversion rate">Conversion rate</th><th title="GMV">GMV</th><th title="ROI">ROI</th><th title="Opt-out rate">Opt-out rate</th><th title="Winning instructions">Winning instructions</th><th title="Status">Status</th></tr></thead>
               <tbody><tr class="rowLink"><td><div class="col gap-xxxs"><span class="t-md med">Mid-layer season opener</span></div></td><td class="t-sm sec ">Hardshell owners, no mid-layer</td><td class="t-md num-t ">3,802</td><td class="t-md num-t ">91.4%</td><td class="t-md num-t ">6.8%</td><td class="t-md num-t bold">$62,410</td><td class="t-md num-t bold">5.4×</td><td class="t-md num-t ">0.7%</td><td class="t-sm sec ">Answer the objection</td><td><span class="tag tag-orange">Measuring</span></td></tr><tr class="rowLink"><td><div class="col gap-xxxs"><span class="t-md med">Summit tier early access</span></div></td><td class="t-sm sec ">Summit + Gold loyalty tiers</td><td class="t-md num-t ">1,180</td><td class="t-md num-t ">96.8%</td><td class="t-md num-t ">11.4%</td><td class="t-md num-t bold">$41,900</td><td class="t-md num-t bold">8.1×</td><td class="t-md num-t ">0.2%</td><td class="t-sm sec ">Early access, no discount</td><td><span class="tag tag-green">Sent</span></td></tr><tr class="rowLink"><td><div class="col gap-xxxs"><span class="t-md med">Care-kit refill push</span></div></td><td class="t-sm sec ">Bought the kit ≥ 60 days ago</td><td class="t-md num-t ">2,640</td><td class="t-md num-t ">93.1%</td><td class="t-md num-t ">9.1%</td><td class="t-md num-t bold">$28,300</td><td class="t-md num-t bold">6.7×</td><td class="t-md num-t ">0.5%</td><td class="t-sm sec ">Points boost</td><td><span class="tag tag-green">Sent</span></td></tr><tr class="rowLink"><td><div class="col gap-xxxs"><span class="t-md med">Return-and-never-return recovery</span></div></td><td class="t-sm sec ">Fit returns, no repurchase</td><td class="t-md num-t ">640</td><td class="t-md num-t ">87.5%</td><td class="t-md num-t ">7.9%</td><td class="t-md num-t bold">$11,200</td><td class="t-md num-t bold">4.2×</td><td class="t-md num-t ">1.1%</td><td class="t-sm sec ">Free shipping</td><td><span class="tag tag-green">Sent</span></td></tr><tr class="rowLink"><td><div class="col gap-xxxs"><span class="t-md med">B2B spring reorder</span></div></td><td class="t-sm sec ">Wholesale accounts past cadence</td><td class="t-md num-t ">84</td><td class="t-md num-t ">98.8%</td><td class="t-md num-t ">26.2%</td><td class="t-md num-t bold">$38,700</td><td class="t-md num-t bold">14.3×</td><td class="t-md num-t ">0.0%</td><td class="t-sm sec ">Answer the objection</td><td><span class="tag tag-green">Sent</span></td></tr><tr class="rowLink"><td><div class="col gap-xxxs"><span class="t-md med">Black Friday warm-up</span></div></td><td class="t-sm sec ">Not yet defined</td><td class="t-md num-t ">—</td><td class="t-md num-t ">—</td><td class="t-md num-t ">—</td><td class="t-md num-t bold">—</td><td class="t-md num-t bold">—</td><td class="t-md num-t ">—</td><td class="t-sm sec ">—</td><td><span class="tag tag-grey">Draft</span></td></tr></tbody>
             </table>
           </div>
@@ -1236,7 +1236,7 @@ body:has(#panel.on) .mobileMenuBtn{display:none}
         <header class="pageHeader">
           <div class="ttl">
             <h1 class="h-xxl">Guardrails</h1>
-            <p class="t-md sec">The hard limits every engagement obeys. A skill can ask; a guardrail decides.</p>
+            <p class="t-md sec">The hard limits every engagement obeys. Instructions can ask; a guardrail decides.</p>
           </div>
           <div class="pageActions">
             <button class="btn btn-secondary" data-goto="conversations">What was stopped</button>
@@ -1712,7 +1712,7 @@ const CAMP_METRICS=[
   {k:"reply",label:"Reply rate",kind:"number"},{k:"click",label:"Click rate",kind:"number"},{k:"cvr",label:"Conversion rate",kind:"number"},
   {k:"orders",label:"Orders",kind:"number"},{k:"aov",label:"Average order value",kind:"number"},{k:"gmv",label:"GMV",kind:"number"},
   {k:"roi",label:"ROI",kind:"number"},{k:"opt",label:"Opt-out rate",kind:"number"},{k:"cost",label:"Campaign cost",kind:"number"},
-  {k:"rpk",label:"GMV / 1k sent",kind:"number"},{k:"win",label:"Winning skill",kind:"text"},{k:"st",label:"Status",kind:"status"}
+  {k:"rpk",label:"GMV / 1k sent",kind:"number"},{k:"win",label:"Winning instructions",kind:"text"},{k:"st",label:"Status",kind:"status"}
 ];
 let campColumns=["aud","sent","reach","cvr","gmv","roi","opt","win","st"];
 
@@ -1726,7 +1726,7 @@ const BENCH=[
 /* A flow is a standard lifecycle sequence we ship, not something the merchant
    hand-builds. Two parts, and they belong to different people: WHEN it fires
    (the trigger — ours, fixed, it is what makes a Welcome a Welcome) and how
-   long it waits (the delay — theirs). WHAT it says is the skill, editable.
+   long it waits (the delay — theirs). WHAT it says is the instructions, editable.
    "Opted in to marketing" is appended last on purpose: RHYTHM_EVENTS pins
    indices 10 and 11, so nothing may be inserted ahead of them. */
 const WHEN_EVENTS=["Checkout abandoned","Session ends without a cart","Order placed","Order fulfilled",
@@ -2849,7 +2849,7 @@ const GR_CATS=[
            ["No discount within X days of a full-price order","14"],["Minimum order for free shipping","$65"]],
    toggles:[["Unique discount code per shopper","So nothing leaks to coupon sites.",true]]},
   {k:"content",n:"Content",d:"What the AI may say",c:"var(--green-300)",
-   sum:"Content rails sit above every skill — no skill can unlock them.",
+   sum:"Content rails sit above every instruction — no instruction can unlock them.",
    banned:true,
    fields:[["Max characters per message","320"]],
    toggles:[["Always include an opt-out line","Legal requirement.",true,true],
@@ -2885,7 +2885,7 @@ const CHANNELS=[
    sends:["@samplestoreco"],status:"Not connected",tag:"tag-grey"},
   {n:"TikTok Shop",c:"var(--orange-300)",d:"Order and shipping updates tied to a TikTok Shop purchase.",on:false,
    sends:["Sample Store Co. Shop"],status:"Not connected",tag:"tag-grey",
-   note:"Transactional only — TikTok Shop's own policy restricts this channel to order and shipping updates, so it never carries marketing content regardless of the skill."}
+   note:"Transactional only — TikTok Shop's own policy restricts this channel to order and shipping updates, so it never carries marketing content regardless of the instructions."}
 ];
 let chSel=0;
 function renderChannels(){
@@ -4523,7 +4523,7 @@ function selectTab(tab){
 const TEST_BODY=`
   <div class="banner banner-info"><div class="col gap-xxxs">
     <span class="t-md med">Pick a real shopper and see exactly what they'd get.</span>
-    <span class="t-sm sec">Nothing is sent. The engine runs the full decision — stage, skill, guardrails, timing — and shows you the result.</span>
+    <span class="t-sm sec">Nothing is sent. The engine runs the full decision — stage, instructions, guardrails, timing — and shows you the result.</span>
   </div></div>
   <div class="field"><span class="label">Shopper</span>
     <select class="selectEl"><option>Ana R. · First-time buyer · day 51</option><option>Marc D. · VIP · quiet 2.1×</option>
@@ -4955,10 +4955,10 @@ const WIZARD=[
    ack:(a)=>/rule/i.test(a) ? "Here's the same audience as rules — edit anything that's off." : "Good — that's the audience settled.",
    card:(a)=>/rule/i.test(a) ? rulesCard() : null},
   {step:2, ask:"What story do you want to tell this audience?",
-   hint:"Start with the campaign moment. I'll turn your answer into a complete skill, block by block.",
+   hint:"Start with the campaign moment. I'll turn your answer into a complete set of instructions, block by block.",
    chips:["New product launch","A product is back in stock","A seasonal story","We fixed a product problem"],
    sample:"New product launch: introduce the Cirrus insulated jacket to hardshell owners who need a warmer layer. Explain what is genuinely new, why it works with what they own, and lead with product education rather than a discount.",
-   ack:"Here's the skill I drafted from that — broken into the blocks the agent will actually load. Review each one, and tell me what to change in plain words.",
+   ack:"Here are the instructions I drafted from that — broken into the blocks the agent will actually load. Review each one, and tell me what to change in plain words.",
    card:()=>skillBlocksCard()},
   {step:2, ask:"Anything to change before we decide how to test it?",
    hint:"Comment on a block — or several — and I'll rewrite. For example: “don't mention price at all”, or “make the tone less salesy”.",
@@ -4967,16 +4967,16 @@ const WIZARD=[
      if(/price/i.test(a)) return "Done — price is out of message one entirely, and if it comes up the agent answers plainly and stops selling. Block 3 now reads: no offer, ever, in this campaign.";
      if(/salesy|tone/i.test(a)) return "Rewritten — the angle now leads with the layering system and the recycled insulation, and the only ask is whether they want sizing help.";
      if(/warranty/i.test(a)) return "Added — block 2 now closes with the lifetime repair warranty, one line, no pressure.";
-     return "Good — the skill is settled."},
+     return "Good — the instructions are settled."},
    card:(a)=>/price|salesy|tone|warranty/i.test(a)?skillBlocksCard(a):null},
   {step:2, ask:"Do you want to A/B test this, or send one version to everyone?",
    hint:"Testing sends three approaches to a slice and gives the winner to the rest. One version is simpler and reaches everyone at once.",
    chips:["A/B test three approaches","One version for everyone"],
    ack:(a)=>{
      wizAB=/test|variation|a\/b|three/i.test(a);
-     if(wizAB){ resetVariants(); return "Testing it is. I wrote three approaches from the skill — different ways to carry the same story. Remove or edit any of them." }
+     if(wizAB){ resetVariants(); return "Testing it is. I wrote three approaches from the instructions — different ways to carry the same story. Remove or edit any of them." }
      VARIANTS.length=0; VARIANTS.push(singleVariant());
-     return "One version, then — the skill as you reviewed it, no test split." },
+     return "One version, then — the instructions as you reviewed them, no test split." },
    card:()=>variantCard()},
   {step:3, ask:"How should it roll out?",
    hint:"I'd test a slice and send the winner to the rest.",
@@ -5034,14 +5034,14 @@ const WIZ_LEARN={
     ins:"Keep only shoppers with site or purchase activity in the current winter season. A hardshell owner who hasn't been back since March is a win-back conversation; this campaign is for people still in the habit."},
   "aud-noreturn":{t:"Exclude: return in last 30 d",s:"Why recent returners are out",
     ins:"Exclude anyone who returned any item in the last 30 days. A recent return usually means an unresolved fit or quality question — pitching them another layer before that's settled reads as not listening."},
-  /* skill chips */
+  /* instruction chips */
   "chip-price":{t:"Price / Offer",s:"Revision: remove price mention",
     ins:"Don't mention price at all in the first message. If price comes up later, answer plainly and stop selling."},
   "chip-salesy":{t:"Tone",s:"Revision: softer tone",
     ins:"Make the tone less salesy. Lead with product education, the layering system and the recycled insulation. The only ask should be sizing help."},
   "chip-warranty":{t:"Content",s:"Revision: add warranty",
     ins:"Add a line about the lifetime repair warranty at the end of the product story. Keep it factual and low-pressure."},
-  /* skill card tags */
+  /* instruction card tags */
   "skill-product":{t:"Block 1 · Product",s:"What the agent says about Cirrus",
     ins:"Introduce the Cirrus insulated jacket as the missing warm layer for shoppers who already own a Sample hardshell. Explain the new recycled insulation and the packable construction, and how the two pieces work together below 5°C. Ground every claim in the product data — no invented specs."},
   "skill-angle":{t:"Block 2 · Angle & tone",s:"How the agent opens and carries itself",
@@ -5049,12 +5049,12 @@ const WIZ_LEARN={
   "skill-offer":{t:"Block 3 · Offer",s:"What the agent may give away",
     ins:"No offer in the first message. If price comes up, answer plainly and stop selling — do not volunteer a discount, a code, or free shipping. The guardrails still cap anything the agent might later be allowed to give."},
   "skill-never":{t:"Block 4 · Never say",s:"The hard content limits",
-    ins:"No percentage discount, no urgency countdown, no “last chance”. Don't suggest the hardshell they own is outdated or insufficient on its own. These sit on top of the skill and can't be unlocked by it."},
+    ins:"No percentage discount, no urgency countdown, no “last chance”. Don't suggest the hardshell they own is outdated or insufficient on its own. These sit on top of the instructions and can't be unlocked by them."},
   /* A/B chips */
   "chip-ab":{t:"A/B testing",s:"The recommended rollout",
-    ins:"A/B test three approaches. Test 10% of the audience with three different skills, wait for results, then send the winner to the remaining 90%."},
+    ins:"A/B test three approaches. Test 10% of the audience with three different sets of instructions, wait for results, then send the winner to the remaining 90%."},
   "chip-single":{t:"Single version",s:"Rollout refinement",
-    ins:"One version for everyone. Skip the A/B test and send the reviewed skill to the whole reachable audience at once."}
+    ins:"One version for everyone. Skip the A/B test and send the reviewed instructions to the whole reachable audience at once."}
 };
 function openWizLearn(k){
   const d=WIZ_LEARN[k]; if(!d) return;
@@ -5113,7 +5113,7 @@ function rulesCard(){
     <div class="col gap-xs" id="wizRuleList"></div>
   </div>`;
 }
-/* the campaign skill, broken into the blocks the agent loads — so a long
+/* the campaign instructions, broken into the blocks the agent loads — so a long
    instruction can be reviewed and revised block by block, in plain words */
 function skillBlocksCard(feedback){
   const noPrice=/price/i.test(feedback||"");
@@ -5131,7 +5131,7 @@ function skillBlocksCard(feedback){
   ];
   return `<div class="card pad-md" style="max-width:680px">
     <div class="row between wrap gap-xs" style="margin-bottom:var(--sm)">
-      <span class="h-sm">The skill, in blocks</span>
+      <span class="h-sm">The instructions, in blocks</span>
       <span class="t-sm sec">Comment on any block and I'll rewrite it</span>
     </div>
     <div class="col gap-sm">
@@ -5298,13 +5298,13 @@ function afterCardMount(w){
   if($("#wizOpenPreview")) $("#wizOpenPreview").addEventListener("click",openPreviewPanel);
 }
 function launchCampaign(){
-  CAMPAIGNS.unshift({n:"Cirrus jacket launch",aud:"Active hardshell owners, no insulated layer",sent:"286 / 2,190",reach:"89.7%",reply:"—",click:"—",cvr:"—",orders:"—",aov:"—",gmv:"$0",roi:"—",opt:"0.1%",cost:"$184",rpk:"$0",win:wizAB?"Testing 3 skills":"One skill",st:"Launching",prog:13});
+  CAMPAIGNS.unshift({n:"Cirrus jacket launch",aud:"Active hardshell owners, no insulated layer",sent:"286 / 2,190",reach:"89.7%",reply:"—",click:"—",cvr:"—",orders:"—",aov:"—",gmv:"$0",roi:"—",opt:"0.1%",cost:"$184",rpk:"$0",win:wizAB?"Testing 3 versions":"One version",st:"Launching",prog:13});
   renderCampaigns();
   goto("campaigns");
 }
 function finishWizard(){
   $("#campCompose").style.display="none";
-  campAddAsk(`<div class="col gap-sm"><span class="t-md med">That's everything set. The audience, story, skills and first 30 messages are ready — nothing has gone out yet.</span>
+  campAddAsk(`<div class="col gap-sm"><span class="t-md med">That's everything set. The audience, story, instructions and first 30 messages are ready — nothing has gone out yet.</span>
     <button class="btn btn-primary" id="wizLaunch" style="width:fit-content">Launch campaign</button></div>`);
   $("#wizLaunch").addEventListener("click",launchCampaign);
 }
@@ -5407,7 +5407,7 @@ function openLearn(k){
          <button class="btn btn-primary" data-acemode="${k}" data-closepanel>Switch to ${m.n}</button>`);
 }
 
-/* ===================== INSTRUCTION STUDIO (skill + live test) ===================== */
+/* ===================== INSTRUCTION STUDIO (instructions + live test) ===================== */
 const SIM_SHOPPERS=[
   {n:"Ana R.",meta:"First-time buyer · Member · bought Winter Tights 51 days ago"},
   {n:"Marc D.",meta:"VIP · Gold · care kit, 2.1× past his rhythm"},
@@ -5546,7 +5546,7 @@ function whenReadback(){
 }
 function openStudio(ctx){
   studio={ctx,shopper:0,thread:[]};
-  /* starts at the normal panel width — editing a skill doesn't need the wide
+  /* starts at the normal panel width — editing instructions doesn't need the wide
      two-column layout until testing is opened (see openTest below) */
   panel.classList.remove("wide");
   openPanel(ctx.title, ctx.sub, `
@@ -5555,14 +5555,14 @@ function openStudio(ctx){
         ${whenBlock(ctx)}
         <div class="sepH"></div>
         <div class="row between wrap gap-xs">
-          <div class="row gap-xs"><span class="t-sm bold">What — the skill</span>
+          <div class="row gap-xs"><span class="t-sm bold">What — the instructions</span>
             <span class="tag ${ctx.ins==="Customized"?"tag-purple":"tag-grey"}">${ctx.ins}</span></div>
           ${ctx.ins==="Customized"?`<button class="btn btn-tertiary sm ter">Reset to default</button>`:""}
         </div>
-        <span class="t-sm sec">One skill. The agent loads it when this fires — nothing stacks on top of it.</span>
+        <span class="t-sm sec">One set of instructions. The agent loads them when this fires — nothing stacks on top.</span>
         <div class="card pad-md" style="background:var(--grey-50);flex:1;display:flex;flex-direction:column;gap:var(--xs)">
           <div class="row between">
-            <span class="mono ter">skill · ${ctx.slug}</span>
+            <span class="mono ter">instructions · ${ctx.slug}</span>
             <span class="t-xs ter">v4 · edited 3 days ago</span>
           </div>
           <textarea class="textarea" id="studioIns" style="background:var(--white);flex:1;min-height:220px">${ctx.text}</textarea>
@@ -5572,7 +5572,7 @@ function openStudio(ctx){
           <span class="tag tag-grey">≤3 msg / week</span><span class="tag tag-grey">quiet 21:00–09:00</span>
           <span class="tag tag-grey">discount ≤10%</span><span class="tag tag-grey">exclusions</span>
         </div>
-        <button class="btn btn-tertiary sm" id="studioTestOpen" style="width:fit-content">Test this skill →</button>
+        <button class="btn btn-tertiary sm" id="studioTestOpen" style="width:fit-content">Test these instructions →</button>
       </div>
 
       <div class="studioCol hidden" id="studioTestCol" style="border-left:1px solid var(--border-neutral-default);padding-left:var(--lg)">
@@ -5591,18 +5591,19 @@ function openStudio(ctx){
           <input class="input" id="studioSay" placeholder="Reply as the shopper…">
           <button class="btn btn-secondary" id="studioSend">Send</button>
         </div>
-        <span class="t-xs ter" id="studioNote">Press Run to see what this skill produces for the shopper above.</span>
+        <span class="t-xs ter" id="studioNote">Press Run to see what these instructions produce for the shopper above.</span>
       </div>
     </div>`,
     `<button class="btn btn-secondary" id="studioRun">Run test</button>
-     <button class="btn btn-primary" id="studioSave">${ctx.nl?"Create the engagement":ctx.when&&ctx.when.mode==="edit"?"Save the engagement":"Save skill"}</button>`);
+     <button class="btn btn-primary" id="studioSave">${ctx.nl?"Create the engagement":ctx.when&&ctx.when.mode==="edit"?"Save the engagement":"Save the instructions"}</button>`);
   drawStudio();
-  /* Testing is secondary to the skill itself, so it starts closed and takes no
+  /* Testing is secondary to the instructions themselves, so it starts closed and takes no
      width until asked for — either link opens it, "Run test" opens and runs. */
   const openTest=()=>{panel.classList.add("wide");$("#studioGrid").classList.add("testOpen");$("#studioTestCol").classList.remove("hidden")};
   $("#studioTestOpen").addEventListener("click",openTest);
-  /* Only the flow studio writes back — an ACE skill is still decorative, same
-     as every other Save in the prototype. A flow saves its wait and its skill;
+  /* Only the flow studio writes back — ACE instructions are still decorative,
+     same as every other Save in the prototype. A flow saves its wait and its
+     instructions;
      the trigger is ours, so it is read back but never taken from the form. */
   $("#studioSave").addEventListener("click",()=>{
     if(ctx.when&&ctx.when.mode==="delay"){
@@ -5660,13 +5661,13 @@ function openStudio(ctx){
     studio.shopper=+$("#studioWho").value; studio.thread=[];
     const sh=SIM_SHOPPERS[studio.shopper];
     studio.thread.push(["out",simOpener(studio.ctx,sh)]);
-    $("#studioNote").textContent="Generated from the skill on the left, for "+sh.n+". Nothing left the building.";
+    $("#studioNote").textContent="Generated from the instructions on the left, for "+sh.n+". Nothing left the building.";
     drawStudio();
   });
   $("#studioSend").addEventListener("click",studioSay);
   $("#studioSay").addEventListener("keydown",e=>{if(e.key==="Enter")studioSay()});
   $("#studioWho").addEventListener("change",()=>{studio.thread=[];drawStudio();
-    $("#studioNote").textContent="Press Run to see what this skill produces for this shopper."});
+    $("#studioNote").textContent="Press Run to see what these instructions produce for this shopper."});
 }
 function studioSay(){
   const inp=$("#studioSay"), v=inp.value.trim();
@@ -5693,7 +5694,7 @@ function drawStudio(){
 }
 const slugify=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 /* a flow: the trigger is stated because it's ours, the wait is a real control
-   because it's theirs, and the skill is editable like any other */
+   because it's theirs, and the instructions are editable like any other */
 function studioForEng(i){
   const r=ENG[i];
   openStudio({title:r.n,sub:"Flow · when it fires, how long it waits, and what it says",ins:r.ins,kind:"Flows",
