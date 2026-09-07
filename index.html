@@ -4,7 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Journey Engagement Center — Axiom prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600&display=swap" rel="stylesheet">
 <style>
+@font-face{font-family:"BB Modern Semi Condensed";src:local("BB Modern Pro SemiCondensed"),local("BBModernPro-SemiCondensed");font-display:swap}
 /* ============================================================
    AXIOM TOKENS (light) — @gorgias/axiom color-tokens.json
    ============================================================ */
@@ -450,6 +454,140 @@ svg.chart .crosshair{stroke:var(--grey-400);stroke-width:1;stroke-dasharray:3 3;
 .panelFoot{padding:var(--md) var(--lg);border-top:1px solid var(--border-neutral-default);
   display:flex;justify-content:flex-end;gap:var(--xs)}
 
+/* engagements welcome: Gorgias editorial brand, contained to this modal */
+.engHelpLink{display:inline-flex;align-items:center;gap:var(--xxs);width:max-content;color:var(--content-accent-default);
+  font-weight:500;border-radius:var(--xxs);padding:var(--xxxxs) var(--xxs);margin-left:calc(0px - var(--xxs))}
+.engHelpLink:hover{background:var(--surface-accent-default)}
+.engWelcomeBackdrop{position:fixed;inset:0;z-index:70;display:grid;place-items:center;padding:var(--md);
+  background:rgba(26,30,35,.48);opacity:0;pointer-events:none;transition:opacity .18s;overscroll-behavior:contain}
+.engWelcomeBackdrop.on{opacity:1;pointer-events:auto}
+.engWelcome{--brand-paper:#fafafa;--brand-ink:#1a1e23;--brand-muted:rgba(26,30,35,.68);--brand-line:#e8e3e1;
+  --brand-coral:#ff9780;--brand-rose:#ffd2c9;--brand-ginger:#ffeae6;--brand-blush:#fef4f3;--brand-fog:#f3f1f0;
+  --brand-sans:"Inter Tight",Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --brand-display:"BB Modern Semi Condensed","BB Modern Pro SemiCondensed",Georgia,serif;
+  position:relative;width:min(1140px,100%);
+  max-height:calc(100dvh - var(--xl));overflow-y:auto;overflow-x:hidden;background:var(--brand-paper);color:var(--brand-ink);
+  border:1px solid rgba(255,255,255,.72);border-radius:24px;box-shadow:0 30px 80px rgba(24,22,20,.28);
+  font-family:var(--brand-sans);letter-spacing:0;transform:translateY(var(--xs)) scale(.99);transition:transform .2s cubic-bezier(.32,.72,0,1)}
+.engWelcomeBackdrop.on .engWelcome{transform:none}
+.engWelcomeClose{position:absolute;z-index:4;top:26px;right:26px;width:40px;height:40px;border:1px solid var(--brand-line);
+  border-radius:50%;background:rgba(250,250,250,.92);display:grid;place-items:center}
+.engWelcomeClose:hover{border-color:var(--brand-coral);background:var(--brand-ginger)}
+.engWelcomeClose:focus-visible{outline:1px solid var(--brand-coral);outline-offset:3px}
+.engWelcomeBody{display:grid;grid-template-columns:minmax(0,.96fr) minmax(0,1.04fr);min-height:610px}
+.engWelcomeEyebrow,.engWelcomeKicker{display:flex;align-items:center;gap:9px;width:max-content;color:var(--brand-ink);
+  font-family:var(--brand-sans);font-size:10px;font-weight:600;letter-spacing:0;text-transform:uppercase}
+.engWelcomeEyebrow::before,.engWelcomeKicker::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--brand-coral)}
+.engWelcomeVisual{position:relative;overflow:hidden;padding:54px 34px 42px;border-right:1px solid var(--brand-line);background:var(--brand-fog)}
+.engWelcomeVisual::after{content:"";position:absolute;width:420px;height:150px;left:38px;bottom:-118px;border:1px solid rgba(255,151,128,.5);
+  border-radius:50%;box-shadow:0 0 0 30px rgba(255,210,201,.5),0 0 0 60px rgba(255,234,230,.7)}
+.engWelcomeOrbit{position:relative;width:min(420px,100%);aspect-ratio:1;margin:46px auto 0;border:1px dashed var(--brand-line);border-radius:50%}
+.engWelcomeOrbit::before{content:"";position:absolute;inset:54px;border:1px solid rgba(26,30,35,.42);border-radius:50%}
+.engWelcomeOrbit::after{content:"";position:absolute;inset:88px;border-radius:50%;opacity:.58;
+  background:repeating-conic-gradient(from 0deg,rgba(255,151,128,.52) 0deg 1deg,transparent 1deg 6deg);
+  -webkit-mask:radial-gradient(circle,transparent 0 24%,#000 25% 26%,transparent 27% 49%,#000 50% 51%,transparent 52%)}
+.engWelcomeSource{position:absolute;z-index:2;display:flex;align-items:center;gap:8px;min-height:38px;padding:7px 11px;
+  border:1px solid var(--brand-line);border-radius:9px;background:rgba(250,250,250,.96);box-shadow:0 3px 12px rgba(26,30,35,.05);
+  opacity:0;transform:translateY(6px)}
+.engWelcomeSource--orders{top:26px;left:118px}.engWelcomeSource--products{right:-5px;top:184px}
+.engWelcomeSource--conversations{bottom:26px;left:110px}.engWelcomeSource--behavior{left:-5px;top:184px}
+.engWelcomeSourceIcon{width:22px;height:22px;display:grid;place-items:center;flex:0 0 auto;color:var(--brand-coral)}
+.engWelcomeSource .t-sm{font-size:12px}
+.engWelcomeEvent{--event-x:0px;--event-y:0px;position:absolute;z-index:1;display:flex;align-items:center;gap:5px;
+  min-height:24px;padding:4px 8px;border:1px solid rgba(232,227,225,.9);border-radius:999px;
+  background:rgba(250,250,250,.92);color:rgba(26,30,35,.66);font-size:9px;line-height:1;white-space:nowrap;
+  opacity:0;pointer-events:none;transform:translate(0,0) scale(.97)}
+.engWelcomeEvent::before{content:"";width:4px;height:4px;border-radius:50%;background:var(--brand-coral);opacity:.8}
+.engWelcomeEvent--collection{left:8px;top:122px;--event-x:112px;--event-y:44px}
+.engWelcomeEvent--cart{left:8px;top:252px;--event-x:112px;--event-y:-26px}
+.engWelcomeEvent--restock{right:8px;top:122px;--event-x:-112px;--event-y:44px}
+.engWelcomeEvent--price{right:8px;top:252px;--event-x:-112px;--event-y:-26px}
+.engWelcomeEvent--delivery{right:35px;bottom:32px;--event-x:-98px;--event-y:-110px}
+.engWelcomeEvent--reorder{left:52px;top:64px;--event-x:95px;--event-y:94px}
+.engWelcomeBackdrop.on .engWelcomeEvent{animation:engWelcomeEventFlow 36s cubic-bezier(.22,1,.36,1) infinite}
+.engWelcomeBackdrop.on .engWelcomeEvent--collection{animation-delay:.6s}
+.engWelcomeBackdrop.on .engWelcomeEvent--cart{animation-delay:3.6s}
+.engWelcomeBackdrop.on .engWelcomeEvent--restock{animation-delay:6.6s}
+.engWelcomeBackdrop.on .engWelcomeEvent--price{animation-delay:13.2s}
+.engWelcomeBackdrop.on .engWelcomeEvent--delivery{animation-delay:16.2s}
+.engWelcomeBackdrop.on .engWelcomeEvent--reorder{animation-delay:22.8s}
+.engWelcomeOutput{--output-x:0px;--output-y:0px;position:absolute;z-index:4;left:50%;top:50%;max-width:176px;padding:8px 10px;
+  border:1px solid var(--brand-line);border-radius:10px 3px 10px 10px;background:rgba(250,250,250,.97);box-shadow:0 5px 18px rgba(26,30,35,.1);
+  color:var(--brand-ink);font-size:11px;line-height:1.35;opacity:0;pointer-events:none;transform:translate(-50%,-50%) scale(.9)}
+.engWelcomeOutput::after{content:"";position:absolute;right:13px;top:-5px;width:8px;height:8px;border-left:1px solid var(--brand-line);
+  border-top:1px solid var(--brand-line);background:rgba(250,250,250,.97);transform:rotate(45deg)}
+.engWelcomeOutput--restock{--output-x:-115px;--output-y:105px}
+.engWelcomeOutput--reorder{--output-x:115px;--output-y:105px;border-radius:3px 10px 10px 10px}
+.engWelcomeOutput--reorder::after{left:13px;right:auto}
+.engWelcomeOutput--wait{--output-x:-112px;--output-y:-80px;max-width:none;border-radius:999px;color:var(--brand-muted);white-space:nowrap}
+.engWelcomeOutput--wait::after{display:none}
+.engWelcomeBackdrop.on .engWelcomeOutput{animation:engWelcomeOutputFlow 36s cubic-bezier(.22,1,.36,1) infinite}
+.engWelcomeBackdrop.on .engWelcomeOutput--restock{animation-delay:9.9s}
+.engWelcomeBackdrop.on .engWelcomeOutput--wait{animation-delay:19.5s}
+.engWelcomeBackdrop.on .engWelcomeOutput--reorder{animation-delay:26.1s}
+.engWelcomeCore{position:absolute;z-index:3;left:50%;top:50%;width:156px;transform:translate(-50%,-50%);text-align:center;opacity:0}
+.engWelcomeCoreMark{position:relative;display:block;width:92px;height:92px;margin:0 auto 13px;border-radius:50%;
+  background:radial-gradient(circle at 38% 32%,var(--brand-rose),var(--brand-coral) 62%,#c54040);box-shadow:0 0 0 7px var(--brand-fog),0 0 0 8px rgba(255,151,128,.72)}
+.engWelcomeCoreGlyph{position:absolute;inset:0;display:block;transform:rotate(-24deg)}
+.engWelcomeCoreGlyph::before,.engWelcomeCoreGlyph::after{content:"";position:absolute;left:50%;top:50%;background:rgba(255,255,255,.62);transform:translate(-50%,-50%)}
+.engWelcomeCoreGlyph::before{width:58px;height:1px}.engWelcomeCoreGlyph::after{width:1px;height:58px}
+.engWelcomeBackdrop.on .engWelcomeCoreGlyph{animation:engWelcomeCoreReact 36s .6s linear infinite}
+.engWelcomeCore strong{display:block;font-family:var(--brand-display);font-size:23px;font-weight:400;line-height:1;white-space:nowrap}
+.engWelcomeStory{padding:54px 66px 38px;min-width:0}
+.engWelcomeStory h2{max-width:18ch;margin-top:var(--sm);font-family:var(--brand-display);font-size:clamp(42px,3.6vw,52px);
+  font-weight:400;line-height:.98;letter-spacing:0}
+.engWelcomeStoryIntro{max-width:44ch;margin-top:18px;color:var(--brand-muted);font-size:15px;line-height:1.58}
+.engWelcomeSteps{display:flex;flex-direction:column;margin-top:24px;border-top:1px solid var(--brand-line)}
+.engWelcomeStep{display:grid;grid-template-columns:34px 1fr;align-items:center;gap:var(--xs);padding:10px 0;border-bottom:1px solid var(--brand-line);
+  opacity:0;transform:translateX(-8px)}
+.engWelcomeStepNum{font-family:var(--brand-sans);font-size:9px;font-weight:600;color:#810b2e}
+.engWelcomeStep h3{font-family:var(--brand-display);font-size:23px;font-weight:400;line-height:1}
+.engWelcomeStep p{margin-top:3px;color:var(--brand-muted);font-size:11px}
+.engWelcomeChecklist{display:grid;gap:0;margin-top:12px;padding:0;list-style:none;
+  opacity:0;transform:translateY(8px)}
+.engWelcomeCheck{display:grid;grid-template-columns:18px 1fr;align-items:start;gap:10px;padding:6px 0;color:var(--brand-ink);
+  font-size:12px;line-height:1.4}
+.engWelcomeCheckIcon{width:17px;height:17px;margin-top:1px;border-radius:50%;display:grid;place-items:center;background:var(--brand-ginger);color:#810b2e}
+.engWelcomeBackdrop.on .engWelcomeSource,.engWelcomeBackdrop.on .engWelcomeStep,.engWelcomeBackdrop.on .engWelcomeChecklist{
+  animation:engWelcomeReveal .42s cubic-bezier(.32,.72,0,1) forwards}
+.engWelcomeBackdrop.on .engWelcomeSource--orders{animation-delay:.08s}.engWelcomeBackdrop.on .engWelcomeSource--products{animation-delay:.17s}
+.engWelcomeBackdrop.on .engWelcomeSource--conversations{animation-delay:.26s}.engWelcomeBackdrop.on .engWelcomeSource--behavior{animation-delay:.35s}
+.engWelcomeBackdrop.on .engWelcomeCore{animation:engWelcomeFade .42s .48s ease forwards}.engWelcomeBackdrop.on .engWelcomeStep:nth-child(1){animation-delay:.6s}
+.engWelcomeBackdrop.on .engWelcomeStep:nth-child(2){animation-delay:.72s}.engWelcomeBackdrop.on .engWelcomeStep:nth-child(3){animation-delay:.84s}
+.engWelcomeBackdrop.on .engWelcomeChecklist{animation-delay:.96s}
+@keyframes engWelcomeReveal{to{opacity:1;transform:none}}
+@keyframes engWelcomeFade{to{opacity:1}}
+@keyframes engWelcomeEventFlow{
+  0%,1.5%{opacity:0;transform:translate(0,6px) scale(.94)}
+  2.5%{opacity:.72;transform:translate(0,-2px) scale(1.03)}
+  3.5%{opacity:.72;transform:translate(0,1px) scale(.99)}
+  5%{opacity:.72;transform:translate(0,0) scale(1)}
+  8%,100%{opacity:0;transform:translate(var(--event-x),var(--event-y)) scale(.96)}
+}
+@keyframes engWelcomeOutputFlow{
+  0%,1%{opacity:0;transform:translate(-50%,-50%) scale(.9)}
+  2.5%{opacity:.96;transform:translate(calc(-50% + var(--output-x)),calc(-50% + var(--output-y))) scale(1.03)}
+  3.5%,5.5%{opacity:.96;transform:translate(calc(-50% + var(--output-x)),calc(-50% + var(--output-y))) scale(1)}
+  8%,100%{opacity:0;transform:translate(calc(-50% + var(--output-x)),calc(-50% + var(--output-y))) scale(.98)}
+}
+@keyframes engWelcomeCoreReact{
+  0%{transform:rotate(-24deg) scale(1)}
+  24.6%{transform:rotate(-24deg) scale(1);animation-timing-function:cubic-bezier(.4,0,.2,1)}
+  27.6%{transform:rotate(336deg) scale(1.06);animation-timing-function:cubic-bezier(.2,.9,.3,1)}
+  28.4%{transform:rotate(336deg) scale(1)}
+  51.2%{transform:rotate(336deg) scale(1);animation-timing-function:cubic-bezier(.4,0,.2,1)}
+  54.2%{transform:rotate(696deg) scale(1.06);animation-timing-function:cubic-bezier(.2,.9,.3,1)}
+  55%{transform:rotate(696deg) scale(1)}
+  69.6%{transform:rotate(696deg) scale(1);animation-timing-function:cubic-bezier(.4,0,.2,1)}
+  72.6%{transform:rotate(1056deg) scale(1.06);animation-timing-function:cubic-bezier(.2,.9,.3,1)}
+  73.4%,100%{transform:rotate(1056deg) scale(1)}
+}
+.engWelcomeFoot{display:flex;align-items:center;justify-content:space-between;gap:var(--md);padding:20px 34px;
+  border-top:1px solid var(--brand-line);background:transparent}
+.engWelcomeFoot p{color:var(--brand-muted)}
+.engWelcomeFoot .btn{height:42px;padding:0 18px;border-radius:7px;background:var(--brand-ink);font-size:13px}
+.engWelcomeFoot .btn:hover{background:#242f8c}
+
 /* conversation */
 .phone{background:var(--white);border:1px solid var(--border-neutral-default);border-radius:12px;
   padding:var(--md);display:flex;flex-direction:column;gap:var(--xs)}
@@ -665,7 +803,7 @@ svg.chart .crosshair{stroke:var(--grey-400);stroke-width:1;stroke-dasharray:3 3;
 .sidebarBackdrop.on{display:block}
 /* the side panel has its own close button in the same top-left corner the
    hamburger floats in — without this they'd sit on top of each other */
-body:has(#panel.on) .mobileMenuBtn{display:none}
+body:has(#panel.on) .mobileMenuBtn,body:has(#engagementsWelcome.on) .mobileMenuBtn{display:none}
 @media (max-width:880px){
   .app{padding:0;height:100dvh}
   .content{border-radius:0;border:0}
@@ -697,6 +835,31 @@ body:has(#panel.on) .mobileMenuBtn{display:none}
   .pageHeader{padding:var(--md) var(--md) var(--md) calc(var(--md) + 44px);flex-wrap:wrap}
   .pageHeader .ttl{flex:1 1 100%}
   .pageActions{flex-wrap:wrap}
+  .engWelcomeClose{top:18px;right:18px}
+  .engWelcomeBody{grid-template-columns:1fr}
+  .engWelcomeStory{order:-1;padding:34px 28px 32px}
+  .engWelcomeStory h2{font-size:42px;max-width:100%;margin-top:36px}
+  .engWelcomeStoryIntro{padding-right:20px}
+  .engWelcomeVisual{min-height:430px;padding:30px 20px 38px;border-top:1px solid var(--brand-line);border-right:0}
+  .engWelcomeOrbit{width:min(320px,100%);margin-top:24px}
+  .engWelcomeOrbit::before{inset:42px}.engWelcomeOrbit::after{inset:68px}
+  .engWelcomeSource--orders{top:16px;left:82px}.engWelcomeSource--products{right:-3px;top:232px}
+  .engWelcomeSource--conversations{bottom:16px;left:74px}.engWelcomeSource--behavior{left:-3px;top:52px}
+  .engWelcomeEvent--collection{left:2px;top:104px;--event-x:76px;--event-y:34px}
+  .engWelcomeEvent--cart{left:2px;top:182px;--event-x:76px;--event-y:-8px}
+  .engWelcomeEvent--restock{right:2px;top:104px;--event-x:-76px;--event-y:34px}
+  .engWelcomeEvent--price{right:2px;top:182px;--event-x:-76px;--event-y:-8px}
+  .engWelcomeEvent--delivery{left:60px;right:auto;top:242px;bottom:auto;--event-x:40px;--event-y:-66px}
+  .engWelcomeEvent--reorder{left:70px;top:62px;--event-x:38px;--event-y:72px}
+  .engWelcomeOutput{max-width:120px;font-size:10px}
+  .engWelcomeOutput--restock{--output-x:-92px;--output-y:40px}
+  .engWelcomeOutput--reorder{--output-x:92px;--output-y:40px}
+  .engWelcomeOutput--wait{--output-x:55px;--output-y:-64px;max-width:none;font-size:9px}
+  .engWelcomeCore{width:132px}.engWelcomeCoreMark{width:76px;height:76px}
+  .engWelcomeChecklist{padding-top:0}
+  .engWelcomeFoot{padding:20px 28px 24px}
+  .engWelcomeFoot{align-items:flex-start;flex-direction:column}
+  .engWelcomeFoot .btn{width:100%;justify-content:center}
   .intelCurrent{padding:var(--lg)}.intelCurrent h2{font-size:22px}
   .intelPath{grid-template-columns:1fr;gap:var(--xs)}.intelPathArrow{height:20px;transform:rotate(90deg)}
   .intelProducts,.intelLiveGrid{grid-template-columns:1fr}.intelEngineFlow{grid-template-columns:1fr 1fr}
@@ -732,6 +895,13 @@ body:has(#panel.on) .mobileMenuBtn{display:none}
   /* Opportunities builds its own header instead of using .pageHeader, so it
      needs the same hamburger clearance applied separately */
   .oppMasterHead{padding-left:calc(var(--md) + 44px)}
+}
+@media (prefers-reduced-motion:reduce){
+  .engWelcomeEvent,.engWelcomeOutput{display:none}
+  .engWelcomeSource,.engWelcomeStep,.engWelcomeChecklist{opacity:1;transform:none!important}.engWelcomeCore{opacity:1}
+  .engWelcomeBackdrop.on .engWelcomeSource,.engWelcomeBackdrop.on .engWelcomeCore,
+  .engWelcomeBackdrop.on .engWelcomeStep,.engWelcomeBackdrop.on .engWelcomeChecklist,
+  .engWelcomeBackdrop.on .engWelcomeCoreGlyph{animation:none}
 }
 </style>
 </head>
@@ -1210,6 +1380,10 @@ body:has(#panel.on) .mobileMenuBtn{display:none}
           <div class="ttl">
             <h1 class="h-xxl">Engagements</h1>
             <p class="t-md sec">Everything that reaches out to a shopper: the engagement the AI decides on its own, and the engagement you define.</p>
+            <button type="button" class="engHelpLink t-sm" data-engagements-help>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+              How it works
+            </button>
           </div>
           <div class="pageActions">
             <button class="btn btn-secondary" data-goto="conversations">Activity log</button>
@@ -1623,6 +1797,66 @@ body:has(#panel.on) .mobileMenuBtn{display:none}
   <div class="panelBody" id="panelBody"></div>
   <div class="panelFoot" id="panelFoot"></div>
 </aside>
+<div class="engWelcomeBackdrop" id="engagementsWelcome" aria-hidden="true" inert>
+  <section class="engWelcome" role="dialog" aria-modal="true" aria-labelledby="engagementsWelcomeTitle" aria-describedby="engagementsWelcomeIntro">
+    <button class="engWelcomeClose" data-close-engagements-help aria-label="Close how engagements work">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+    </button>
+    <div class="engWelcomeBody">
+      <section class="engWelcomeVisual" aria-label="Orders, products, conversations, shopper behavior, store events, context, and timing inform Gorgias Engage">
+        <div class="engWelcomeOrbit">
+          <div class="engWelcomeSource engWelcomeSource--orders">
+            <span class="engWelcomeSourceIcon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6.5 12 2l9 4.5v11L12 22l-9-4.5z"/><path d="m3 6.5 9 4.5 9-4.5M12 11v11"/></svg></span>
+            <span class="t-sm med">Orders</span>
+          </div>
+          <div class="engWelcomeSource engWelcomeSource--products">
+            <span class="engWelcomeSourceIcon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20.6 13.6 11 23l-9-9V3h11z"/><circle cx="7.5" cy="8.5" r="1.5"/></svg></span>
+            <span class="t-sm med">Products</span>
+          </div>
+          <div class="engWelcomeSource engWelcomeSource--conversations">
+            <span class="engWelcomeSourceIcon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/><path d="M8 9h8M8 13h5"/></svg></span>
+            <span class="t-sm med">Conversations</span>
+          </div>
+          <div class="engWelcomeSource engWelcomeSource--behavior">
+            <span class="engWelcomeSourceIcon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 18V9M10 18V5M16 18v-7M22 18V2"/><path d="m3 13 6-5 6 4 7-7"/></svg></span>
+            <span class="t-sm med">Shopper behavior</span>
+          </div>
+          <span class="engWelcomeEvent engWelcomeEvent--collection" aria-hidden="true">Viewed collection</span>
+          <span class="engWelcomeEvent engWelcomeEvent--cart" aria-hidden="true">Cart updated</span>
+          <span class="engWelcomeEvent engWelcomeEvent--restock" aria-hidden="true">Kelsey asked about size M · now restocked</span>
+          <span class="engWelcomeEvent engWelcomeEvent--price" aria-hidden="true">Price changed</span>
+          <span class="engWelcomeEvent engWelcomeEvent--delivery" aria-hidden="true">Delivery issue resolved · contacted today</span>
+          <span class="engWelcomeEvent engWelcomeEvent--reorder" aria-hidden="true">Mark usually reorders after 54 days</span>
+          <span class="engWelcomeOutput engWelcomeOutput--restock" aria-hidden="true">Hey Kelsey, the Classic Denim Jacket is back in your size</span>
+          <span class="engWelcomeOutput engWelcomeOutput--wait" aria-hidden="true">Wait for next signal to send message</span>
+          <span class="engWelcomeOutput engWelcomeOutput--reorder" aria-hidden="true">Hey Mark, running low? Tap to reorder</span>
+          <div class="engWelcomeCore">
+            <span class="engWelcomeCoreMark" aria-hidden="true"><span class="engWelcomeCoreGlyph"></span></span>
+            <strong>Engage</strong>
+          </div>
+        </div>
+      </section>
+      <section class="engWelcomeStory">
+        <h2 id="engagementsWelcomeTitle">Turn shopper signals into messages worth sending</h2>
+        <p class="engWelcomeStoryIntro" id="engagementsWelcomeIntro">Gorgias Engage combines orders, product activity, and support conversations to decide when to act and what to say.</p>
+        <div class="engWelcomeSteps" aria-label="What Gorgias Engage decides">
+          <div class="engWelcomeStep"><span class="engWelcomeStepNum">01</span><div><h3>Find</h3><p>The right shopper</p></div></div>
+          <div class="engWelcomeStep"><span class="engWelcomeStepNum">02</span><div><h3>Decide</h3><p>Whether, when, and where to reach them</p></div></div>
+          <div class="engWelcomeStep"><span class="engWelcomeStepNum">03</span><div><h3>Message</h3><p>What to say, based on their full context</p></div></div>
+        </div>
+        <ul class="engWelcomeChecklist" aria-label="How Gorgias Engage works">
+          <li class="engWelcomeCheck"><span class="engWelcomeCheckIcon" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m2.5 6 2.2 2.2L9.5 3.5"/></svg></span><span>Works within your frequency limits, quiet hours, and brand rules</span></li>
+          <li class="engWelcomeCheck"><span class="engWelcomeCheckIcon" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m2.5 6 2.2 2.2L9.5 3.5"/></svg></span><span>Learns from shopper responses, purchases, and your feedback</span></li>
+          <li class="engWelcomeCheck"><span class="engWelcomeCheckIcon" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m2.5 6 2.2 2.2L9.5 3.5"/></svg></span><span>Optimizes for more conversions and fewer opt-outs</span></li>
+        </ul>
+      </section>
+    </div>
+    <footer class="engWelcomeFoot">
+      <p class="t-sm sec">Review every decision in the activity log.</p>
+      <button class="btn btn-primary" data-close-engagements-help>View engagements</button>
+    </footer>
+  </section>
+</div>
 <div class="tip" id="tip"></div>
 
 <script>
@@ -3637,6 +3871,28 @@ function rewardDetail(){
    PANEL + NAV + GLOBAL
    ======================================================================= */
 const panel=$("#panel"), overlay=$("#overlay");
+const engagementsWelcome=$("#engagementsWelcome");
+let engagementsWelcomeFocus=null, engagementsWelcomeShown=false;
+function openEngagementsWelcome(){
+  engagementsWelcomeFocus=document.activeElement;
+  $(".app").setAttribute("inert",""); engagementsWelcome.removeAttribute("inert");
+  engagementsWelcome.classList.add("on"); engagementsWelcome.setAttribute("aria-hidden","false");
+  requestAnimationFrame(()=>$("[data-close-engagements-help]",engagementsWelcome).focus());
+}
+function closeEngagementsWelcome(){
+  engagementsWelcome.classList.remove("on"); engagementsWelcome.setAttribute("aria-hidden","true");
+  engagementsWelcome.setAttribute("inert",""); $(".app").removeAttribute("inert");
+  if(engagementsWelcomeFocus) engagementsWelcomeFocus.focus();
+}
+function maybeOpenEngagementsWelcome(){
+  if(engagementsWelcomeShown) return;
+  let seen=false;
+  try{seen=localStorage.getItem("engagements-how-seen-v1")==="1"}catch(e){}
+  engagementsWelcomeShown=true;
+  if(seen) return;
+  try{localStorage.setItem("engagements-how-seen-v1","1")}catch(e){}
+  openEngagementsWelcome();
+}
 function openPanel(t,s,b,f){
   if(!/studio/.test(b||"")) panel.classList.remove("wide");
   $("#panelTitle").textContent=t; $("#panelSub").textContent=s;
@@ -3704,7 +3960,17 @@ function closePanel(){panel.classList.remove("on");overlay.classList.remove("on"
   setTimeout(()=>panel.classList.remove("wide"),220)}
 $("#panelClose").addEventListener("click",closePanel);
 overlay.addEventListener("click",closePanel);
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){closePanel();closeSidebar()}});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){
+    if(engagementsWelcome.classList.contains("on")) closeEngagementsWelcome();
+    else{closePanel();closeSidebar()}
+  }
+  if(e.key==="Tab"&&engagementsWelcome.classList.contains("on")){
+    const focusable=$$("button",engagementsWelcome).filter(x=>!x.disabled), first=focusable[0], last=focusable[focusable.length-1];
+    if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+    else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+  }
+});
 
 const NAV_OF={"campaign-new":"campaigns"};
 /* every screen gets its own #hash, so any page can be copied out of the
@@ -3732,6 +3998,7 @@ function goto(page,opts={}){
   $("#scroller").scrollTop=0; closePanel();
   if(page==="campaign-new") resetWizard();
   if(page==="intelligence"){ renderIntelligence(); buildAsk(); }
+  if(page==="engagements") maybeOpenEngagementsWelcome();
   /* the Ask shortcut belongs to the Intelligence Core — it answers from that
      page's model objects, so it should not float over unrelated screens */
   const fab=$("#askFab"), askP=$("#askPanel");
@@ -4531,6 +4798,10 @@ const TEST_BODY=`
   </div>`;
 
 document.addEventListener("click",e=>{
+  if(e.target.closest("[data-engagements-help]")){openEngagementsWelcome();return}
+  if(e.target.closest("[data-close-engagements-help]")){closeEngagementsWelcome();return}
+  if(e.target===engagementsWelcome){closeEngagementsWelcome();return}
+
   const g=e.target.closest("[data-goto]");
   if(g){goto(g.dataset.goto);return}
 
