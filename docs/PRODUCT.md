@@ -361,6 +361,34 @@ argument being made, not just the page it lives on.
 and `CLAUDE.md`). "Look at the Custom engagement tab in Engagements" is a worse instruction than a link that opens
 straight there.
 
+## 15. Engagements explains the operating model once, then gets out of the way
+
+**Decision.** The first visit to Engagements opens a welcome modal that explains the system through
+two connected ideas: an orbital view of the business data feeding Gorgias Engage, and an editorial
+sequence of the three actions it takes — Find, Decide and Message. Skills and guardrails remain the
+final safety layer. A short checklist captures its boundaries, learning inputs, and optimization
+goals without adding another explanatory section. The composition reveals in sequence to guide the read without requiring
+interaction. The modal does not reproduce the Intelligence Hub or teach every control. It answers
+the smaller question a merchant has before using this page: what does Gorgias Engage decide, and what
+do I still control?
+
+**The orbit stays live without becoming a feed.** Short, rotating signals show shopper behavior,
+store events, shopper context and timing. Only one appears at a time and moves
+toward Gorgias Engage, so the animation communicates continuous input without competing with the
+four persistent data sources or the explanation beside them. Three signals complete the loop: the
+center reacts, then emits either a shopper message or a visible decision to wait. The rest remain
+inputs, which keeps the animation from implying that every signal triggers outreach.
+
+**The composition makes ownership explicit.** Gorgias Engage owns the moment, shopper, timing and
+message; the merchant sets autonomy and allowed themes. Skills and guardrails remain the safety layer
+before anything reaches a shopper. On narrow screens, the explanation comes first and the connected
+data illustration follows.
+
+**Why a modal.** This is orientation, not a daily task and not another permanent block above the
+table. It appears once, can be closed immediately, and remains available from **How it works** in
+the page header. The one-time state is stored locally; nothing is sent or persisted to a
+service.
+
 ---
 
 ## Vocabulary

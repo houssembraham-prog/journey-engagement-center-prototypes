@@ -54,6 +54,25 @@ there.
 `NAV_OF` maps a page to the nav item that should look active — that's how `campaign-new` keeps
 Campaigns highlighted.
 
+### Engagements welcome
+
+`#engagementsWelcome` is a centered dialog with its own backdrop rather than the shared side panel.
+`goto("engagements")` calls `maybeOpenEngagementsWelcome()`, which opens it once per browser using
+`localStorage`; the **How it works** `[data-engagements-help]` button in the page header always opens it again. Close buttons and
+the backdrop use `[data-close-engagements-help]` plus the delegated document click handler. Escape
+closes it and Tab stays inside its two buttons while it is open. `.engWelcomeBody` splits the modal
+between an orbital connected-data illustration and an editorial explanation of Gorgias Engage's
+Find, Decide and Message actions. Narrow screens place the explanation first and the illustration below it.
+CSS animation delays reveal the sources, core, actions and safety layer in order; the reduced-motion
+media query shows the complete composition immediately. Six decorative `.engWelcomeEvent` tags
+cycle one at a time toward the core across shopper behavior, store events, shopper context and timing.
+Three selected signals continue through the decision: the center glyph spins,
+then an `.engWelcomeOutput` message or wait decision exits along the same path. Reduced motion hides
+this secondary layer. Modal colors use the Gorgias brand palette:
+Coral `#FF9780`, Rose `#FFD2C9`, Ginger `#FFEAE6`, Blush `#FEF4F3`, Black `#1A1E23`, Smoke
+`#E8E3E1`, Fog `#F3F1F0` and White `#FAFAFA`. Body text uses Inter Tight; display text uses the
+locally installed BB Modern Semi Condensed, with a Georgia fallback.
+
 ## Intelligence Hub and the shopper read
 
 **`page-intelligence`** is deliberately static markup — an AI business briefing, not a driven
